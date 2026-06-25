@@ -8,7 +8,7 @@ import { deleteFileFromCloudinary } from "../config/cloudinary.js";
 // @access Public or Protected
 export const addProject = expressAsyncHandler(async (req, res) => {
   const { title, description, techStack, liveDemo, githubLink, imageUrl } = req.body;
-  console.log("Body data",req.body)
+  // console.log("Body data",req.body)
 
   const project = new Project({
     title,

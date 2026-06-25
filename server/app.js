@@ -13,12 +13,7 @@ import {
 } from "./middlewares/errorHandlingMiddleware.js";
 
 import limiter from "./utils/limiter.js";
-import authRoutes from "./routes/authroutes.js";
-import contactRoutes from "./routes/contactRoutes.js";
-import projectRoutes from "./routes/projectRoutes.js"
-import serviceRoutes from './routes/serviceRoutes.js';
-import skillRoutes from "./routes/skillRoutes.js"
-import profileRoutes from './routes/profileRoutes.js'
+import indexRoute from "./routes/indexRoute.js"
 import swaggerSpec from "./utils/swaggerSpec.js";
 // import pingRoutes from "./routes/pingRoutes.js";
 
@@ -42,12 +37,8 @@ app.get("/", (req, res) =>{
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
-app.use("/api/auth", authRoutes);
-app.use("/api/contacts", contactRoutes);
-app.use("/api/projects", projectRoutes);
-app.use("/api/services", serviceRoutes);
-app.use("/api/skills", skillRoutes);
-app.use("/api/profile", profileRoutes);
+app.use("/api", indexRoute);
+
 
 // 404 Handler   
 app.use(pageNotFound);
