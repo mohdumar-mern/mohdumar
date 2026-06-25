@@ -11,6 +11,10 @@ const AboutPage = () => {
     []
   );
 
+  const fadeSlideUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
   const containerVariants = {
     hidden: {},
     visible: {
@@ -70,8 +74,8 @@ const AboutPage = () => {
       </Helmet>
 
       <Container>
-        <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh] w-full shadow-2xl rounded-xl overflow-hidden">
-          {/* 🔹 Left: About Text */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center">
+      {/* 🔹 Left: About Text */}
           <motion.div
             className="flex items-center justify-center bg-black px-6 lg:px-12 py-12"
             initial="hidden"
@@ -79,26 +83,34 @@ const AboutPage = () => {
             variants={containerVariants}
           >
             <aside className="space-y-6 max-w-xl text-white">
+            
               <motion.h1
-                className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-orange-400"
-                variants={textVariants}
+                className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white"
+                variants={fadeSlideUp}
               >
-                About Me
+                ABOUT {" "}
+                <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                  ME
+                </span>
               </motion.h1>
 
+              <motion.div
+                className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent"
+                variants={fadeSlideUp}
+              />
+
+              {/* Role */}
               <motion.h2
-                className="text-lg md:text-xl lg:text-2xl font-medium"
-                variants={textVariants}
+                className="text-base md:text-lg uppercase tracking-widest text-gray-300"
+                variants={fadeSlideUp}
               >
-                I'm a{" "}
-                <span className="text-orange-400 font-semibold">
-                  MERN Stack Developer
-                </span>
+                <span className="text-cyan-400">&gt;</span> FULL STACK DEVELOPER
               </motion.h2>
 
+
               <motion.p
-                className="text-gray-300 text-base md:text-lg leading-relaxed"
-                variants={textVariants}
+                className="text-gray-400 text-sm md:text-base leading-relaxed"
+                variants={fadeSlideUp}
               >
                 Hi, I'm Mohd Umar, a MERN Stack Developer from Noida, Uttar
                 Pradesh, India. I enjoy building full-stack web applications
@@ -106,8 +118,8 @@ const AboutPage = () => {
               </motion.p>
 
               <motion.p
-                className="text-gray-300 text-base md:text-lg leading-relaxed"
-                variants={textVariants}
+                className="text-gray-400 text-sm md:text-base leading-relaxed"
+                variants={fadeSlideUp}
               >
                 I connect front-end and back-end seamlessly using RESTful APIs,
                 manage state efficiently with Redux, and focus on secure,

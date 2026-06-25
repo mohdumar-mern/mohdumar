@@ -12,7 +12,7 @@ const containerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.3,
+      staggerChildren: 0.2,
     },
   },
 };
@@ -22,21 +22,9 @@ const fadeSlideUp = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const buttonHover = {
-  scale: 1.05,
-  boxShadow: "0 0 8px rgb(255, 165, 0)",
-  transition: { duration: 0.3, ease: "easeInOut" },
-};
-
-const avatarHover = {
-  scale: 1.05,
-  transition: { duration: 0.5, yoyo: Infinity, ease: "easeInOut" },
-};
-
 const Home = () => {
   return (
     <>
-      {/* 🔹 SEO Meta Tags */}
       <Helmet>
         <title>Mohd Umar | MERN Stack Developer Portfolio</title>
         <meta
@@ -46,7 +34,6 @@ const Home = () => {
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {/* 🔹 Open Graph (Social Share) */}
         <meta property="og:title" content="Mohd Umar | MERN Stack Developer Portfolio" />
         <meta
           property="og:description"
@@ -59,7 +46,6 @@ const Home = () => {
         <meta property="og:url" content="https://umarportfolio-frontend.vercel.app/" />
         <meta property="og:type" content="website" />
 
-        {/* 🔹 Twitter Cards */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Mohd Umar | MERN Stack Developer Portfolio" />
         <meta
@@ -71,7 +57,6 @@ const Home = () => {
           content="https://umarportfolio-frontend.vercel.app/banner.png"
         />
 
-        {/* 🔹 Structured Data */}
         <script type="application/ld+json">
           {`
             {
@@ -96,60 +81,72 @@ const Home = () => {
       </Helmet>
 
       <Container>
-        <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh] w-full shadow-2xl rounded-xl overflow-hidden">
-          {/* 🔹 Left: Avatar Card */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center">
+          {/* 🔹 Left: Avatar */}
           <motion.div
-            className="flex items-center justify-center bg-orange-500 p-10 relative"
+            className="flex items-center justify-center order-2 lg:order-1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2 }}
           >
-            {/* <motion.div
-              // whileHover={avatarHover}
-              initial={{ scale: 1 }}
-              animate={{ scale: 1 }}
-            > */}
-              <AvatarCard size="w-96 h-96" />
-
-            {/* </motion.div> */}
+            <AvatarCard size="w-72 h-72 md:w-96 md:h-96" />
           </motion.div>
 
-          {/* 🔸 Right: Content Section */}
+          {/* 🔸 Right: Content */}
           <motion.div
-            className="flex items-center justify-center bg-black px-6 lg:px-12 py-12"
+            className="flex items-center justify-center order-1 lg:order-2 font-mono"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
           >
-            <motion.aside className="space-y-6 max-w-xl text-white">
-              <motion.h1
-                className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-orange-400"
+            <aside className="space-y-6 max-w-xl">
+              {/* Eyebrow */}
+              <motion.div
+                className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest"
                 variants={fadeSlideUp}
               >
-                Hi, I'm Mohd Umar
+                <span   className="h-[2px] w-28 bg-gradient-to-l from-pink-500 to-transparent"
+                variants={fadeSlideUp}></span>
+                <span>INITIALIZING PORTFOLIO</span>
+                <span   className="h-[2px] w-28 bg-gradient-to-r from-pink-500 to-transparent"
+                variants={fadeSlideUp}></span>
+              </motion.div>
+
+              {/* Heading */}
+              <motion.h1
+                className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white"
+                variants={fadeSlideUp}
+              >
+                HI, I'M{" "}
+                <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                  MOHD UMAR
+                </span>
               </motion.h1>
 
+              {/* Underline accent */}
+              <motion.div
+                className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent"
+                variants={fadeSlideUp}
+              />
+
+              {/* Role */}
               <motion.h2
-                className="text-lg md:text-xl lg:text-2xl font-medium"
+                className="text-base md:text-lg uppercase tracking-widest text-gray-300"
                 variants={fadeSlideUp}
               >
-                I'm a&nbsp;
-                <span className="text-orange-400 font-semibold">
-                  MERN Stack Developer
-                </span>
+                <span className="text-cyan-400">&gt;</span> FULL STACK DEVELOPER | PYTHON DEVELOPER
               </motion.h2>
 
+              {/* Description */}
               <motion.p
-                className="text-gray-300 text-base md:text-lg leading-relaxed"
+                className="text-gray-400 text-sm md:text-base leading-relaxed"
                 variants={fadeSlideUp}
               >
-                I'm a MERN Stack Developer from Noida, India. I specialize in
-                building full-stack applications using MongoDB, Express.js,
-                React, and Node.js. I focus on REST APIs, Redux state
-                management, secure backends, and performance optimization.
-                Let's build something amazing together!
+                Full Stack Developer with 1+ year of hands-on experience, currently working as <span className="text-cyan-400 font-bold" > Associate ERP Developer </span> at <span  className="text-cyan-400 font-bold"> A.Paul Software Systems </span> in Delhi. I specialize in MERN stack with expertise in Docker, Redis, WebSockets, and MySQL. I've built production applications including an EMS system with RBAC and rate limiting, a real-time secret chat app using Socket.io and Redis, and a YouTube clone. I'm looking for full-time or remote full stack opportunities to grow my career.
+
               </motion.p>
 
+              {/* Social links */}
               <motion.div variants={fadeSlideUp}>
                 <SocialLinksComponents
                   className="flex gap-4"
@@ -157,25 +154,22 @@ const Home = () => {
                 />
               </motion.div>
 
+              {/* CTAs */}
               <motion.div
                 className="flex flex-wrap items-center gap-4 pt-2"
                 variants={fadeSlideUp}
               >
-                <motion.div whileHover={buttonHover}>
-                  <ResumeDownload />
-                </motion.div>
+                <ResumeDownload />
 
-                <motion.div whileHover={buttonHover}>
-                  <Link
-                    to="/contact-us"
-                    className="px-6 py-2 rounded-md border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white transition duration-300"
-                    aria-label="Contact Mohd Umar"
-                  >
-                    Contact Me
-                  </Link>
-                </motion.div>
+                <Link
+                  to="/contact-us"
+                  className="px-6 py-3 border border-cyan-500/40 text-cyan-400 uppercase tracking-widest text-sm font-bold hover:bg-cyan-400 hover:text-black transition-colors duration-300"
+                  aria-label="Contact Mohd Umar"
+                >
+                  Contact_Me
+                </Link>
               </motion.div>
-            </motion.aside>
+            </aside>
           </motion.div>
         </section>
       </Container>

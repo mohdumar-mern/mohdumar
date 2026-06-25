@@ -1,14 +1,7 @@
 import React from "react";
 import resume from "../../../assets/resume.pdf";
 
-
-// 🔧 Skeleton Block UI
-const SkeletonBlock = ({ width = "w-full", height = "h-4" }) => (
-  <div className={`bg-gray-300 rounded-md animate-pulse ${width} ${height}`} />
-);
-
 const ResumeDownload = () => {
-
   const handleDownload = () => {
     if (resume) {
       window.open(resume, "_blank", "noopener,noreferrer");
@@ -19,15 +12,14 @@ const ResumeDownload = () => {
 
   return (
     <div className="text-center">
-    
-
       {resume && (
         <button
           onClick={handleDownload}
-          className="inline-block bg-orange-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-orange-600 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-400"
+          className="inline-block bg-cyan-400 text-black font-mono uppercase tracking-widest text-sm font-bold py-3 px-6 shadow-[0_0_20px_rgba(34,211,238,0.35)] hover:bg-cyan-300 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-cyan-300"
+          style={{ clipPath: "polygon(0 0, 100% 0, 92% 100%, 0% 100%)" }}
           aria-label="View or download resume"
         >
-          View Resume
+          View_Resume
         </button>
       )}
     </div>

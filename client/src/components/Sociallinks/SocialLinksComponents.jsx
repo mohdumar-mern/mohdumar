@@ -5,7 +5,7 @@ import SocialLinksCard from "../UI/card/SocialLilnksCard";
 
 const SkeletonCircle = ({ className = "" }) => (
   <div
-    className={`w-10 h-10 bg-gray-300 rounded-full animate-pulse ${className}`}
+    className={`w-10 h-10 bg-cyan-900/30 border border-cyan-500/20 rounded-full animate-pulse ${className}`}
     role="status"
     aria-label="Loading social link"
   />
@@ -33,8 +33,8 @@ const SocialLinksComponents = ({ color }) => {
 
   if (!socialLinks || Object.keys(socialLinks).length === 0) {
     return (
-      <p className="text-center text-yellow-400 mt-10" role="status">
-        No social links available.
+      <p className="text-center text-cyan-400/70 font-mono text-sm mt-10" role="status">
+        // no_social_links_found
       </p>
     );
   }

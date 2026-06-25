@@ -1,0 +1,14 @@
+:root {
+    --neon-cyan: #00f5ff;
+    --neon-magenta: #ff006e;
+    --neon-yellow: #ffcc00;
+    --bg-void: #020408;
+    --bg-panel: #080d14;
+    --bg-card: #0a1220;
+    --grid-line: rgba(0, 245, 255, 0.07);
+    --text-primary: #e8f4f8;
+    --text-dim: #4a7a8a;
+    --glow-cyan: 0 0 10px #00f5ff, 0 0 30px rgba(0,245,255,0.3);
+    --glow-magenta: 0 0 10px #ff006e, 0 0 30px rgba(255,0,110,0.3);
+    --border-cyber: 1px solid rgba(0, 245, 255, 0.2);
+  }

@@ -1,30 +1,32 @@
-
 import React from "react";
-import avatar from "../../../assets/avatar.jpg";
+import avatar from "../../../assets/avatar.png";
 
 const AvatarCard = ({ size = "w-64 h-64" }) => {
-
   return (
-  <div className="flex justify-center items-center">
-  <div
-    className={`relative overflow-hidden rounded-full border-white border-2 shadow-xl ${size}`}
-  >
-    <img
-      src={avatar}
-      alt="User Avatar"
-      loading="lazy"
-      decoding="async"
-      fetchpriority="high"
-      className="
-        w-full h-full object-cover object-top
-        transition-all duration-500 ease-out
-       hover:scale-125 hover:brightness-125 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.6)]
+    <div className="flex justify-center items-center">
+      <div className={`relative ${size}`}>
+        {/* Corner brackets */}
+        <span className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-cyan-400" />
+        <span className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-cyan-400" />
+        <span className="absolute -bottom-3 -left-3 w-8 h-8 border-b-2 border-l-2 border-cyan-400" />
+        <span className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-cyan-400" />
 
-      "
-    />
-  </div>
-</div>
-
+        <div className="relative overflow-hidden rounded-full border-2 border-cyan-500/40 shadow-[0_0_30px_rgba(34,211,238,0.25)] w-full h-full">
+          <img
+            src={avatar}
+            alt="User Avatar"
+            loading="lazy"
+            decoding="async"
+            fetchPriority="high"
+            className="
+              w-full h-full object-cover object-top
+              transition-all duration-500 ease-out
+              hover:scale-110 hover:brightness-110 hover:drop-shadow-[0_0_16px_rgba(34,211,238,0.6)]
+            "
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
