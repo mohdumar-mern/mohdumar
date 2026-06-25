@@ -1,23 +1,18 @@
 import React, { useEffect, useState, useCallback, memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Mail, Phone, User, MessageSquareText } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Mail, Phone, MapPin, Linkedin, Github } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 
 import Input from "../../components/UI/Input/Input";
 import Container from "../../components/UI/Container/Container";
-import AvatarCard from "../../components/UI/card/AvatarCard";
-import ResumeDownload from "../../components/UI/card/ResumeDownload";
-import SocialLinksComponents from "../../components/Sociallinks/SocialLinksComponents";
 
 import {
   sendContactRequest,
   clearContactStatus,
 } from "../../features/Contact/contactSlice";
 
-// 🔸 Initial form state
 const initialFormState = {
   name: "",
   email: "",
@@ -25,24 +20,30 @@ const initialFormState = {
   message: "",
 };
 
+const fadeSlideUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.15 } },
+};
+
+const contactDetails = [
+  { icon: Mail, label: "uk1941404@gmail.com", href: "mailto:uk1941404@gmail.com" },
+  { icon: Phone, label: "+91 96287 87975", href: "tel:9628787975" },
+  { icon: Linkedin, label: "linkedin.com/in/mohdumar-mern", href: "https://www.linkedin.com/in/mohd-umar-mern-stack-developer/" },
+  { icon: Github, label: "github.com/mohdumar-mern", href: "https://github.com/mohdumar-mern" },
+  { icon: MapPin, label: "Noida, Uttar Pradesh, India", href: null },
+];
+
 const ContactPage = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const [formData, setFormData] = useState(initialFormState);
   const [formError, setFormError] = useState(null);
 
   const { error, loading, message } = useSelector((state) => state.contact);
-
-  // 🔹 Prefill message from navigation (e.g., "Hire me for this service")
-  useEffect(() => {
-    const subject = location.state?.subject;
-    if (subject) {
-      setFormData((prev) => ({
-        ...prev,
-        message: `${subject}\n\n`,
-      }));
-    }
-  }, [location.state]);
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -66,7 +67,6 @@ const ContactPage = () => {
         setFormError(validationError);
         return;
       }
-
       const res = await dispatch(sendContactRequest(formData));
       if (res.meta.requestStatus === "fulfilled") {
         setFormData(initialFormState);
@@ -87,23 +87,11 @@ const ContactPage = () => {
   }, [message, error, dispatch]);
 
   useEffect(() => {
-    return () => {
-      dispatch(clearContactStatus());
-    };
+    return () => dispatch(clearContactStatus());
   }, [dispatch]);
-
-  const sectionVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
-  const buttonVariants = {
-    hover: { scale: 1.05, transition: { duration: 0.3 } },
-  };
 
   return (
     <>
-      {/* 🔹 SEO Meta */}
       <Helmet>
         <title>Contact | Mohd Umar - MERN Stack Developer</title>
         <meta
@@ -121,121 +109,154 @@ const ContactPage = () => {
       </Helmet>
 
       <Container>
-        <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh] w-full shadow-2xl rounded-xl overflow-hidden">
-          {/* 📝 Form Section */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-start font-mono py-10">
+          {/* 🔹 Left: Intro + Contact Details */}
           <motion.div
-            className="bg-black px-6 lg:px-12 py-12"
             initial="hidden"
             animate="visible"
-            variants={sectionVariants}
+            variants={containerVariants}
           >
-            <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2 justify-center">
-              <Phone className="text-orange-500" />
-              Contact Us
-            </h2>
+            {/* Eyebrow */}
+            <motion.div
+              className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest"
+              variants={fadeSlideUp}
+            >
+              <span>//</span>
+              <span>Establish_Connection</span>
+            </motion.div>
 
-            <form onSubmit={handleSubmit} className="space-y-5 max-w-md mx-auto">
+            {/* Heading */}
+            <motion.h1
+              className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white mt-3"
+              variants={fadeSlideUp}
+            >
+              CONTACT{" "}
+              <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                NODE
+              </span>
+            </motion.h1>
+
+            {/* Underline accent */}
+            <motion.div
+              className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent mt-4 mb-10"
+              variants={fadeSlideUp}
+            />
+
+            <motion.h2
+              className="text-xl md:text-2xl font-bold text-white mb-4"
+              variants={fadeSlideUp}
+            >
+              Let's build something.
+            </motion.h2>
+
+            <motion.p
+              className="text-gray-400 text-sm md:text-base leading-relaxed mb-8 max-w-md"
+              variants={fadeSlideUp}
+            >
+              Open to full-time roles, freelance projects, or just a great
+              conversation about tech. Send a transmission and I'll respond
+              within 24 hours.
+            </motion.p>
+
+            {/* Contact list */}
+            <motion.ul className="space-y-0 max-w-md" variants={containerVariants}>
+              {contactDetails.map(({ icon: Icon, label, href }, index) => {
+                const content = (
+                  <div className="flex items-center gap-4 border border-cyan-500/15 px-4 py-4 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-colors duration-300">
+                    <Icon className="w-4 h-4 text-pink-400 shrink-0" />
+                    <span className="text-sm text-gray-300 tracking-wide">
+                      {label}
+                    </span>
+                  </div>
+                );
+                return (
+                  <motion.li
+                    key={index}
+                    className="-mt-px"
+                    variants={fadeSlideUp}
+                  >
+                    {href ? (
+                      <a href={href} target="_blank" rel="noopener noreferrer">
+                        {content}
+                      </a>
+                    ) : (
+                      content
+                    )}
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
+          </motion.div>
+
+          {/* 🔸 Right: Form */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
               {formError && (
-                <p className="text-red-500 text-center">{formError}</p>
+                <p className="text-pink-500 text-sm">{formError}</p>
               )}
 
               <Input
-                label="Full Name"
+                label="Operator_Name"
                 name="name"
-                placeholder="Enter your name"
+                placeholder="Your name"
                 value={formData.name}
                 onChange={handleChange}
-                icon={User}
               />
               <Input
-                label="Email Address"
+                label="Comms_Channel"
                 name="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="your@email.com"
                 value={formData.email}
                 onChange={handleChange}
-                icon={Mail}
               />
               <Input
-                label="Phone Number"
+                label="Direct_Line"
                 name="phone"
                 type="tel"
-                placeholder="Enter your phone number"
+                placeholder="Your phone number"
                 value={formData.phone}
                 onChange={handleChange}
-                icon={Phone}
               />
 
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-semibold text-[#BDC3C7] mb-2"
+                  className="block text-xs uppercase tracking-widest text-gray-500 mb-2"
                 >
-                  Message
+                  Transmission
                 </label>
-                <div className="relative">
-                  <MessageSquareText className="absolute left-3 top-3 text-orange-500 w-5 h-5" />
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows="4"
-                    value={formData.message}
-                    placeholder="Type your message..."
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2 border text-gray-300 bg-transparent border-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 transition resize-none"
-                  />
-                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  value={formData.message}
+                  placeholder="Your message..."
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition resize-none"
+                  style={{
+                    clipPath:
+                      "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+                  }}
+                />
               </div>
 
               <motion.button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition disabled:opacity-50"
-                variants={buttonVariants}
-                whileHover="hover"
+                whileHover={{ scale: 1.03 }}
+                className="bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 px-8 hover:bg-cyan-300 transition disabled:opacity-50"
+                style={{
+                  clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)",
+                }}
               >
-                {loading ? "Sending..." : "Send Message"}
+                {loading ? "Sending..." : "Send Transmission"}
               </motion.button>
             </form>
-          </motion.div>
-
-          {/* 📞 Info Section */}
-          <motion.div
-            className="flex flex-col items-center justify-center bg-orange-500 p-10 gap-4"
-            aria-label="Contact Information Section"
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            transition={{ delay: 0.3 }}
-          >
-            <AvatarCard size="w-20 h-20" />
-
-            <div className="text-center text-white space-y-1">
-              <div>
-                Phone:{" "}
-                <a href="tel:9628787975" className="underline">
-                  9628787975
-                </a>
-              </div>
-              <div>
-                Email:{" "}
-                <a href="mailto:uk1941404@gmail.com" className="underline">
-                  uk1941404@gmail.com
-                </a>
-              </div>
-            </div>
-
-            <SocialLinksComponents color="bg-black" />
-
-            <div className="flex gap-4">
-              <ResumeDownload />
-              <Link
-                to="/contact"
-                className="border border-black bg-white text-black font-medium px-4 py-2 rounded-lg hover:bg-black hover:text-orange-500 transition"
-              >
-                Contact Me
-              </Link>
-            </div>
           </motion.div>
         </section>
       </Container>

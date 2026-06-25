@@ -31,11 +31,6 @@ const AboutPage = () => {
     },
   };
 
-  const avatarHover = {
-    scale: 1.05,
-    transition: { duration: 0.5, yoyo: Infinity, ease: "easeInOut" },
-  };
-
   return (
     <>
       {/* 🔹 SEO Meta Tags */}
@@ -48,7 +43,6 @@ const AboutPage = () => {
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {/* Optional: Structured Data */}
         <script type="application/ld+json">
           {`
             {
@@ -74,21 +68,29 @@ const AboutPage = () => {
       </Helmet>
 
       <Container>
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center">
-      {/* 🔹 Left: About Text */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center font-mono">
+          {/* 🔹 Left: About Text */}
           <motion.div
-            className="flex items-center justify-center bg-black px-6 lg:px-12 py-12"
+            className="flex items-center justify-center order-2 lg:order-1"
             initial="hidden"
             animate="visible"
             variants={containerVariants}
           >
-            <aside className="space-y-6 max-w-xl text-white">
-            
+            <aside className="space-y-6 max-w-xl">
+              {/* Eyebrow */}
+              <motion.div
+                className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest"
+                variants={fadeSlideUp}
+              >
+                <span>//</span>
+                <span>Operator_Profile</span>
+              </motion.div>
+
               <motion.h1
                 className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white"
                 variants={fadeSlideUp}
               >
-                ABOUT {" "}
+                ABOUT{" "}
                 <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
                   ME
                 </span>
@@ -104,9 +106,8 @@ const AboutPage = () => {
                 className="text-base md:text-lg uppercase tracking-widest text-gray-300"
                 variants={fadeSlideUp}
               >
-                <span className="text-cyan-400">&gt;</span> FULL STACK DEVELOPER
+                <span className="text-cyan-400">&gt;</span> Full_Stack_Developer
               </motion.h2>
-
 
               <motion.p
                 className="text-gray-400 text-sm md:text-base leading-relaxed"
@@ -126,12 +127,14 @@ const AboutPage = () => {
                 scalable, and responsive web apps.
               </motion.p>
 
+              {/* Skills */}
               <div>
                 <motion.h3
-                  className="text-white text-2xl font-semibold mb-2"
+                  className="flex items-center gap-2 text-cyan-400 text-xs uppercase tracking-widest mb-3"
                   variants={textVariants}
                 >
-                  Skills
+                  <span>//</span>
+                  <span>Tech_Stack</span>
                 </motion.h3>
                 <motion.ul
                   className="flex flex-wrap gap-3"
@@ -143,7 +146,7 @@ const AboutPage = () => {
                     <motion.li
                       key={index}
                       title={skill}
-                      className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors duration-300 cursor-default"
+                      className="border border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-400 hover:text-black text-cyan-300 text-xs uppercase tracking-widest px-4 py-2 transition-colors duration-300 cursor-default"
                       variants={textVariants}
                     >
                       {skill}
@@ -154,20 +157,14 @@ const AboutPage = () => {
             </aside>
           </motion.div>
 
-          {/* 🔸 Right: Avatar with BG Image */}
+          {/* 🔸 Right: Avatar */}
           <motion.div
-            className="flex items-center justify-center bg-orange-500 p-10 relative"
+            className="flex items-center justify-center order-1 lg:order-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2 }}
           >
-            {/* <motion.div
-              whileHover={avatarHover}
-              initial={{ scale: 1 }}
-              animate={{ scale: 1 }}
-            > */}
-              <AvatarCard size = "w-80 h-80" />
-            {/* </motion.div> */}
+            <AvatarCard size="w-72 h-72 md:w-80 md:h-80" />
           </motion.div>
         </section>
       </Container>
