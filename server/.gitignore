@@ -1,0 +1,28 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+
+# dotenv environment variables
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Uploaded files
+uploads/
+public/uploads/
+
+# IDE-specific
+.vscode/
+.idea/
+
+# Build outputs (if using any)
+dist/
+build/
+
+Dockerfile
+.dockerignore

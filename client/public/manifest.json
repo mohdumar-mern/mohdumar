@@ -1,0 +1,22 @@
+{
+    "name": "Mohammad Umar Portfolio",
+    "short_name": "UmarPortfolio",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#ff6600",
+    "description": "Portfolio of Mohammad Umar — MERN Stack Developer",
+    "icons": [
+      {
+        "src": "/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
