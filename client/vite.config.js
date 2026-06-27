@@ -43,13 +43,14 @@ export default defineConfig({
           'react-router': ['react-router-dom'],
           'redux': ['@reduxjs/toolkit', 'react-redux', 'redux-logger'],
           'animations': ['framer-motion'],
-          'icons': ['lucide-react', 'react-icons'],
+          'icons': ['lucide-react'],
           'http': ['axios'],
           'ui-utils': ['react-hot-toast', 'react-helmet-async'],
         }
       }
     }
   },
+
   define: {
     "process.env": {},
   },

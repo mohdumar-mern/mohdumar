@@ -47,7 +47,7 @@ const Home = () => {
         />
         <meta
           property="og:image"
-          content="https://mohdumar.online/banner.png"
+          content="https://mohdumar.online/banner.webp"
         />
         <meta property="og:url" content="https://mohdumar.online" />
         <meta property="og:type" content="website" />
@@ -62,7 +62,7 @@ const Home = () => {
         />
         <meta
           name="twitter:image"
-          content="https://mohdumar.online/banner.png"
+          content="https://mohdumar.online/banner.webp"
         />
         <script type="application/ld+json">
           {JSON.stringify({
