@@ -1,5 +1,5 @@
 import React from "react";
-import avatar from "../../../assets/avatar.png";
+import avatar from "../../../assets/avatar.webp";
 
 const AvatarCard = ({ size = "w-64 h-64" }) => {
   return (
