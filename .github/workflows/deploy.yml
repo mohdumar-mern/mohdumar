@@ -43,10 +43,10 @@ jobs:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       - name: Install Dependencies
         run: cd server && npm install
       - name: Run Tests
@@ -56,7 +56,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Vercel CLI
         run: npm install -g vercel
       - name: Deploy Client to Vercel
