@@ -1,29 +1,3 @@
-# name: Deploy Portfolio
-
-# on:
-#   push:
-#     branches: [master]
-
-# jobs:
-#   deploy-client:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v3
-
-#       - name: Install Vercel CLI
-#         run: npm install -g vercel
-
-#       - name: Deploy Client to Vercel
-#         run: vercel --cwd . --prod --token=${{ secrets.VERCEL_TOKEN }}
-#         env:
-#           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-#           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-#   deploy-server:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Trigger Render Deploy
-#         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
 name: CI/CD Portfolio
 
 on:
@@ -42,6 +16,7 @@ jobs:
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
