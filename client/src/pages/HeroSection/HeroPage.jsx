@@ -26,57 +26,72 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Mohd Umar | MERN Stack Developer Portfolio</title>
+        <link rel="canonical" href="https://mohdumar.online" />
+        <title>
+          Mohd Umar | MERN Stack Developer | PYTHON Developer India | FULL Stack
+          Developer
+        </title>{" "}
         <meta
           name="description"
-          content="Mohd Umar is a MERN Stack Developer from Noida. Explore full-stack projects, skills, resume, and services."
+          content="Mohd Umar is a MERN Stack Developer and React Developer from India specializing in Node.js, MongoDB, Express.js, Redux Toolkit, Docker, Redis and modern web applications."
         />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <meta property="og:title" content="Mohd Umar | MERN Stack Developer Portfolio" />
+        <meta
+          property="og:title"
+          content="Mohd Umar | MERN Stack Developer Portfolio"
+        />
         <meta
           property="og:description"
           content="Full-stack developer from Noida, India specializing in MERN stack apps."
         />
         <meta
           property="og:image"
-          content="https://umarportfolio-frontend.vercel.app/banner.png"
+          content="https://mohdumar.online/banner.png"
         />
-        <meta property="og:url" content="https://umarportfolio-frontend.vercel.app/" />
+        <meta property="og:url" content="https://mohdumar.online" />
         <meta property="og:type" content="website" />
-
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Mohd Umar | MERN Stack Developer Portfolio" />
+        <meta
+          name="twitter:title"
+          content="Mohd Umar | MERN Stack Developer Portfolio"
+        />
         <meta
           name="twitter:description"
           content="Explore the portfolio of Mohd Umar, a React and Node.js developer from Noida."
         />
         <meta
           name="twitter:image"
-          content="https://umarportfolio-frontend.vercel.app/banner.png"
+          content="https://mohdumar.online/banner.png"
         />
-
         <script type="application/ld+json">
-          {`
-            {
-              "@context": "https://schema.org",
-              "@type": "Person",
-              "name": "Mohd Umar",
-              "url": "https://umarportfolio.vercel.app",
-              "sameAs": [
-                "https://github.com/mohdumar-mern",
-                "https://linkedin.com/in/mohd-umar-mern-stack-developer"
-              ],
-              "jobTitle": "MERN Stack Developer",
-              "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "Noida",
-                "addressRegion": "Uttar Pradesh",
-                "addressCountry": "India"
-              }
-            }
-          `}
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Mohd Umar",
+            url: "https://mohdumar.online",
+            jobTitle: "MERN Stack Developer",
+            description:
+              "MERN Stack Developer specializing in React.js, Node.js, Express.js and MongoDB",
+
+            sameAs: [
+              "https://github.com/mohdumar-mern",
+              "https://linkedin.com/in/mohd-umar-mern-stack-developer",
+            ],
+
+            knowsAbout: [
+              "React.js",
+              "Node.js",
+              "Express.js",
+              "GitHub",
+              "CI/CD",
+              "MongoDB",
+              "Redux Toolkit",
+              "Docker",
+              "Redis",
+              "JavaScript",
+            ],
+          })}
         </script>
       </Helmet>
 
@@ -105,11 +120,15 @@ const Home = () => {
                 className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest"
                 variants={fadeSlideUp}
               >
-                <span   className="h-[2px] w-28 bg-gradient-to-l from-pink-500 to-transparent"
-                variants={fadeSlideUp}></span>
+                <span
+                  className="h-[2px] w-28 bg-gradient-to-l from-pink-500 to-transparent"
+                  variants={fadeSlideUp}
+                ></span>
                 <span>INITIALIZING PORTFOLIO</span>
-                <span   className="h-[2px] w-28 bg-gradient-to-r from-pink-500 to-transparent"
-                variants={fadeSlideUp}></span>
+                <span
+                  className="h-[2px] w-28 bg-gradient-to-r from-pink-500 to-transparent"
+                  variants={fadeSlideUp}
+                ></span>
               </motion.div>
 
               {/* Heading */}
@@ -134,7 +153,8 @@ const Home = () => {
                 className="text-base md:text-lg uppercase tracking-widest text-gray-300"
                 variants={fadeSlideUp}
               >
-                <span className="text-cyan-400">&gt;</span> FULL STACK DEVELOPER | PYTHON DEVELOPER
+                <span className="text-cyan-400">&gt;</span> FULL STACK DEVELOPER
+                | PYTHON DEVELOPER
               </motion.h2>
 
               {/* Description */}
@@ -142,8 +162,23 @@ const Home = () => {
                 className="text-gray-400 text-sm md:text-base leading-relaxed"
                 variants={fadeSlideUp}
               >
-                Full Stack Developer with 1+ year of hands-on experience, currently working as <span className="text-cyan-400 font-bold" > Associate ERP Developer </span> at <span  className="text-cyan-400 font-bold"> A.Paul Software Systems </span> in Delhi. I specialize in MERN stack with expertise in Docker, Redis, WebSockets, and MySQL. I've built production applications including an EMS system with RBAC and rate limiting, a real-time secret chat app using Socket.io and Redis, and a YouTube clone. I'm looking for full-time or remote full stack opportunities to grow my career.
-
+                Full Stack Developer with 1+ year of hands-on experience,
+                currently working as{" "}
+                <span className="text-cyan-400 font-bold">
+                  {" "}
+                  Associate ERP Developer{" "}
+                </span>{" "}
+                at{" "}
+                <span className="text-cyan-400 font-bold">
+                  {" "}
+                  A.Paul Software Systems{" "}
+                </span>{" "}
+                in Delhi. I specialize in MERN stack with expertise in Docker,
+                Redis, WebSockets, and MySQL. I've built production applications
+                including an EMS system with RBAC and rate limiting, a real-time
+                secret chat app using Socket.io and Redis, and a YouTube clone.
+                I'm looking for full-time or remote full stack opportunities to
+                grow my career.
               </motion.p>
 
               {/* Social links */}

@@ -1,4 +1,5 @@
 User-agent: *
+
 Allow: /
 
-Sitemap: https://umarportfolio-frontend.vercel.app/sitemap.xml
+Sitemap: https://mohdumar.online/sitemap.xml
