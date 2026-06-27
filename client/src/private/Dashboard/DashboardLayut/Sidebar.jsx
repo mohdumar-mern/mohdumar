@@ -1,12 +1,9 @@
-// Sidebar.jsx
-import React from 'react';
+import React from "react";
 import {
   LogOut,
   Plus,
   User,
-  FileText,
   Code2,
-  Link as LinkIcon,
   LayoutDashboard,
   Contact,
   Briefcase,
@@ -14,8 +11,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { logoutUser } from '../../../features/Auth/authSlice';
-import SidebarItem from './SidebarItem';
+import { logoutUser } from "../../../features/Auth/authSlice";
+import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -36,22 +33,34 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-64 bg-black border-r p-6 hidden sm:block">
-      <h2 className="text-2xl font-bold text-orange-500 mb-6 tracking-wide">
-        Admin Panel
+    <aside className="w-64 bg-black border-r border-cyan-500/15 p-6 hidden sm:block font-mono">
+      {/* Eyebrow */}
+      <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest mb-2">
+        <span>//</span>
+        <span>Root_Access</span>
+      </div>
+
+      <h2 className="text-xl font-extrabold uppercase tracking-tight text-white mb-1">
+        ADMIN{" "}
+        <span className="text-cyan-400 drop-shadow-[0_0_12px_rgba(34,211,238,0.5)]">
+          PANEL
+        </span>
       </h2>
-      <nav className="space-y-3">
+
+      <div className="h-[2px] w-16 bg-gradient-to-r from-cyan-400 to-transparent mb-8" />
+
+      <nav className="space-y-1">
         {tabs.map(({ label, icon, path }) => (
           <SidebarItem key={label} to={path} icon={icon} label={label} />
         ))}
       </nav>
 
-      <div className="mt-10">
+      <div className="mt-10 pt-6 border-t border-cyan-500/10">
         <button
           onClick={logoutHandler}
-          className="flex items-center gap-2 text-red-600 font-semibold hover:text-red-800 transition"
+          className="flex items-center gap-2 text-pink-400 hover:text-pink-300 text-sm uppercase tracking-widest font-semibold transition"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" />
           Logout
         </button>
       </div>

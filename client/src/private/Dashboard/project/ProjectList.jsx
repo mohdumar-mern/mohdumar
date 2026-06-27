@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Edit, Eye, Trash } from "lucide-react";
+import { Edit, Eye, Trash, Plus } from "lucide-react";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import {
   fetchProjects,
@@ -70,37 +70,40 @@ const ProjectList = () => {
 
   const renderTableBody = () =>
     projects.map((project, index) => (
-      <tr key={project._id} className="hover:bg-[#111] text-gray-300">
-        <td className="px-4 py-2 border">{index + 1}</td>
-        <td className="px-4 py-2 border">{project.title}</td>
-        <td className="px-4 py-2 border">
+      <tr
+        key={project._id}
+        className="hover:bg-cyan-500/5 text-gray-300 border-b border-cyan-500/10"
+      >
+        <td className="px-4 py-3 text-gray-500">{index + 1}</td>
+        <td className="px-4 py-3 text-white">{project.title}</td>
+        <td className="px-4 py-3 text-gray-500 text-xs">
           {new Date(project.createdAt).toLocaleDateString()}
         </td>
-        <td className="px-4 py-2 border text-center">
-          <div className="flex justify-center items-center gap-3">
+        <td className="px-4 py-3 text-center">
+          <div className="flex justify-center items-center gap-4">
             <button
               aria-label="Edit project"
               title="Edit"
-              className="text-blue-600 hover:text-blue-800 transition"
+              className="text-cyan-400 hover:text-cyan-300 transition"
               onClick={() => navigate(`/dashboard/projects/${project._id}/edit`)}
             >
-              <Edit size={18} />
+              <Edit size={16} />
             </button>
             <button
               aria-label="View project"
               title="View"
-              className="text-green-600 hover:text-green-800 transition"
+              className="text-emerald-400 hover:text-emerald-300 transition"
               onClick={() => navigate(`/dashboard/projects/${project._id}/view`)}
             >
-              <Eye size={18} />
+              <Eye size={16} />
             </button>
             <button
               aria-label="Delete project"
               title="Delete"
-              className="text-red-600 hover:text-red-800 transition"
+              className="text-pink-400 hover:text-pink-300 transition"
               onClick={() => handleDelete(project._id)}
             >
-              <Trash size={18} />
+              <Trash size={16} />
             </button>
           </div>
         </td>
@@ -115,23 +118,35 @@ const ProjectList = () => {
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <div className="p-4">
+      <div className="font-mono">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white">Projects List</h2>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+              <span>//</span>
+              <span>Registry</span>
+            </div>
+            <h2 className="text-xl font-bold uppercase tracking-tight text-white mt-1">
+              Projects_List
+            </h2>
+          </div>
           <button
             onClick={handleAddProject}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
+            className="flex items-center gap-2 bg-cyan-400 text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:bg-cyan-300 transition"
+            style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
           >
-            + Add Project
+            <Plus className="w-4 h-4" />
+            Add_Project
           </button>
         </div>
 
         {/* Status Message */}
         {(message || error) && (
           <div
-            className={`mb-4 p-3 rounded-md ${
-              error ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+            className={`mb-4 px-4 py-3 border text-sm ${
+              error
+                ? "border-pink-500/30 bg-pink-500/10 text-pink-300"
+                : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
             }`}
           >
             {message || error}
@@ -143,19 +158,21 @@ const ProjectList = () => {
 
         {/* Empty State */}
         {!loading && projects?.length === 0 && (
-          <p className="text-center text-gray-600">No projects found.</p>
+          <p className="text-center text-gray-500 text-sm uppercase tracking-widest mt-8">
+            No_projects_found
+          </p>
         )}
 
         {/* Table */}
         {!loading && projects?.length > 0 && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-orange-300">
-              <thead className="bg-orange-100 text-black">
+          <div className="overflow-x-auto border border-cyan-500/15">
+            <table className="min-w-full text-sm">
+              <thead className="bg-cyan-500/5 text-cyan-300 text-xs uppercase tracking-widest">
                 <tr>
-                  <th className="px-4 py-2 border">Sr no</th>
-                  <th className="px-4 py-2 border">Title</th>
-                  <th className="px-4 py-2 border">Created</th>
-                  <th className="px-4 py-2 border">Actions</th>
+                  <th className="px-4 py-3 text-left">Sr_No</th>
+                  <th className="px-4 py-3 text-left">Title</th>
+                  <th className="px-4 py-3 text-left">Created</th>
+                  <th className="px-4 py-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>{renderTableBody()}</tbody>
@@ -165,11 +182,13 @@ const ProjectList = () => {
 
         {/* Pagination */}
         {!loading && totalPages > 1 && (
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+          <div className="mt-6">
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          </div>
         )}
       </div>
     </>

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 import {
-  ArrowLeft,
+  ChevronLeft,
   File,
   Github,
   Image,
@@ -18,8 +18,6 @@ import {
 import {
   fetchProfile,
   updateProfile,
-  // clearError,
-  // clearMessage,
 } from "../../../features/Profile/profileSlice";
 import Input from "../../../components/UI/Input/Input";
 
@@ -59,16 +57,6 @@ const UpdateProfile = () => {
     }
   }, [profile]);
 
-  useEffect(() => {
-    if (message || error) {
-      const timeout = setTimeout(() => {
-        // dispatch(clearMessage());
-        // dispatch(clearError());
-      }, 3000);
-      return () => clearTimeout(timeout);
-    }
-  }, [message, error, dispatch]);
-
   const handleChange = useCallback((e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -104,34 +92,48 @@ const UpdateProfile = () => {
         <meta name="description" content="Update your personal and social profile details." />
       </Helmet>
 
-      <div className="max-w-3xl mx-auto p-6 bg-black rounded-lg shadow-md">
+      <div className="max-w-3xl mx-auto font-mono">
         <button
           type="button"
           onClick={() => navigate("/dashboard/profile")}
-          className="text-white font-semibold text-lg mb-4 inline-flex items-center"
+          className="text-gray-400 hover:text-cyan-400 text-sm uppercase tracking-widest mb-6 inline-flex items-center transition"
         >
-          <ArrowLeft className="mr-2" />
-          Back to Profile
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back_to_Profile
         </button>
 
-        <h2 className="text-2xl font-bold mb-6 text-center text-orange-500">
-          Update Profile
+        <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+          <span>//</span>
+          <span>Modify_Record</span>
+        </div>
+
+        <h2 className="text-2xl font-extrabold uppercase tracking-tight text-white mt-2 mb-6">
+          UPDATE{" "}
+          <span className="text-cyan-400 drop-shadow-[0_0_14px_rgba(34,211,238,0.5)]">
+            PROFILE
+          </span>
         </h2>
 
         {message && (
-          <p className="mb-4 p-3 bg-green-100 text-green-700 rounded text-center">
+          <div className="mb-4 px-4 py-3 border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm text-center">
             {message}
-          </p>
+          </div>
         )}
         {error && (
-          <p className="mb-4 p-3 bg-red-100 text-red-700 rounded text-center">
+          <div className="mb-4 px-4 py-3 border border-pink-500/30 bg-pink-500/10 text-pink-300 text-sm text-center">
             {error}
-          </p>
+          </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5 border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6 sm:p-8"
+          style={{
+            clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)",
+          }}
+        >
           <Input
-            label="Full Name"
+            label="Full_Name"
             type="text"
             name="name"
             placeholder="Mohd Umar"
@@ -142,7 +144,7 @@ const UpdateProfile = () => {
           />
 
           <Input
-            label="Avatar Image"
+            label="Avatar_Image"
             type="file"
             name="avatar"
             onChange={handleChange}
@@ -151,7 +153,7 @@ const UpdateProfile = () => {
           />
 
           <Input
-            label="Resume (PDF/Doc)"
+            label="Resume_(PDF/Doc)"
             type="file"
             name="resume"
             onChange={handleChange}
@@ -160,7 +162,7 @@ const UpdateProfile = () => {
           />
 
           <Input
-            label="GitHub"
+            label="Github"
             type="url"
             name="github"
             placeholder="https://github.com/mohdumar-mern"
@@ -209,12 +211,13 @@ const UpdateProfile = () => {
             icon={Youtube}
           />
 
-          <div className="text-center">
+          <div className="pt-2">
             <button
               type="submit"
-              className="bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-orange-600 transition duration-200"
+              className="w-full bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 hover:bg-cyan-300 transition"
+              style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
             >
-              Update Profile
+              Update_Profile
             </button>
           </div>
         </form>

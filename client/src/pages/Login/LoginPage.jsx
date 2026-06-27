@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Mail, LogIn, Lock } from "lucide-react";
+import { Mail, Lock, ShieldCheck } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import Container from "../../components/UI/Container/Container";
 import Input from "../../components/UI/Input/Input";
@@ -72,48 +72,70 @@ const LoginPage = () => {
       </Helmet>
 
       <Container>
-        <section className="min-h-[80vh] w-full max-w-xl mx-auto flex items-center justify-center">
-          <div className="bg-black w-full shadow-2xl rounded-xl p-8 md:p-10">
-            <h2 className="text-3xl font-bold text-white mb-6 text-center flex items-center justify-center gap-2">
-              <LogIn className="text-orange-500" />
-              Login
-            </h2>
+        <section className="min-h-[80vh] w-full max-w-md mx-auto flex items-center justify-center font-mono">
+          <div className="w-full">
+            {/* Eyebrow */}
+            <div className="flex items-center justify-center gap-2 text-pink-500 text-xs uppercase tracking-widest mb-3">
+              <span>//</span>
+              <span>Admin_Access</span>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {formError && (
-                <p className="text-red-500 text-center">{formError}</p>
-              )}
+            {/* Heading */}
+            <h1 className="text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-white text-center">
+              SYSTEM{" "}
+              <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                LOGIN
+              </span>
+            </h1>
 
-              <Input
-                label="Email Address"
-                name="email"
-                type="email"
-                placeholder="lorem@gmail.com"
-                value={formData.email}
-                onChange={handleChange}
-                icon={Mail}
-              />
-              <Input
-                label="Password"
-                name="password"
-                type="password"
-                placeholder="********"
-                value={formData.password}
-                onChange={handleChange}
-                icon={Lock}
-              />
+            {/* Underline accent */}
+            <div className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent mx-auto mt-4 mb-10" />
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-orange-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-orange-600 transition disabled:opacity-50"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <LogIn />
-                  {loading ? "Logging in..." : "Login"}
-                </span>
-              </button>
-            </form>
+            {/* Panel */}
+            <div
+              className="border border-cyan-500/20 bg-gradient-to-b from-cyan-950/15 to-black p-8"
+              style={{
+                clipPath:
+                  "polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)",
+              }}
+            >
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {formError && (
+                  <p className="text-pink-500 text-sm text-center">{formError}</p>
+                )}
+
+                <Input
+                  label="Operator_Email"
+                  name="email"
+                  type="email"
+                  placeholder="lorem@gmail.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  icon={Mail}
+                />
+                <Input
+                  label="Access_Key"
+                  name="password"
+                  type="password"
+                  placeholder="********"
+                  value={formData.password}
+                  onChange={handleChange}
+                  icon={Lock}
+                />
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-2 bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 hover:bg-cyan-300 transition disabled:opacity-50"
+                  style={{
+                    clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)",
+                  }}
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  {loading ? "Authenticating..." : "Authenticate"}
+                </button>
+              </form>
+            </div>
           </div>
         </section>
       </Container>
