@@ -31,7 +31,6 @@
     "mongoose-paginate-v2": "^1.9.0",
     "morgan": "^1.10.0",
     "multer": "^2.2.0",
-    "multer-storage-cloudinary": "^4.0.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^9.0.1",
     "redis": "^5.5.6",
