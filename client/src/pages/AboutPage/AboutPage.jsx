@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 
 import Container from "../../components/UI/Container/Container";
@@ -11,29 +10,8 @@ const AboutPage = () => {
     []
   );
 
-  const fadeSlideUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-  };
-  const containerVariants = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.15 },
-    },
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
     <>
-      {/* 🔹 SEO Meta Tags */}
       <Helmet>
         <title>About | Mohd Umar - MERN Stack Developer</title>
         <meta
@@ -67,105 +45,109 @@ const AboutPage = () => {
         </script>
       </Helmet>
 
+      {/* Manual CSS animations — no framer-motion dependency on this page */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+          animation: fadeIn 1.2s ease-out both;
+        }
+        .fade-slide-up {
+          opacity: 0;
+          animation: fadeSlideUp 0.6s ease-out forwards;
+        }
+      `}</style>
+
       <Container>
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center font-mono">
           {/* 🔹 Left: About Text */}
-          <motion.div
-            className="flex items-center justify-center order-2 lg:order-1"
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
+          <div className="flex items-center justify-center order-2 lg:order-1">
             <aside className="space-y-6 max-w-xl">
               {/* Eyebrow */}
-              <motion.div
-                className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest"
-                variants={fadeSlideUp}
+              <div
+                className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest fade-slide-up"
+                style={{ animationDelay: "0s" }}
               >
                 <span>//</span>
                 <span>Operator_Profile</span>
-              </motion.div>
+              </div>
 
-              <motion.h1
-                className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white"
-                variants={fadeSlideUp}
+              <h1
+                className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-white fade-slide-up"
+                style={{ animationDelay: "0.1s" }}
               >
                 ABOUT{" "}
                 <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
                   ME
                 </span>
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent"
-                variants={fadeSlideUp}
+              <div
+                className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent fade-slide-up"
+                style={{ animationDelay: "0.2s" }}
               />
 
               {/* Role */}
-              <motion.h2
-                className="text-base md:text-lg uppercase tracking-widest text-gray-300"
-                variants={fadeSlideUp}
+              <h2
+                className="text-base md:text-lg uppercase tracking-widest text-gray-300 fade-slide-up"
+                style={{ animationDelay: "0.3s" }}
               >
                 <span className="text-cyan-400">&gt;</span> Full_Stack_Developer
-              </motion.h2>
+              </h2>
 
-              <motion.p
-                className="text-gray-400 text-sm md:text-base leading-relaxed"
-                variants={fadeSlideUp}
+              <p
+                className="text-gray-400 text-sm md:text-base leading-relaxed fade-slide-up"
+                style={{ animationDelay: "0.4s" }}
               >
                 Hi, I'm Mohd Umar, a MERN Stack Developer from Noida, Uttar
                 Pradesh, India. I enjoy building full-stack web applications
                 that are fast, responsive, and user-friendly.
-              </motion.p>
+              </p>
 
-              <motion.p
-                className="text-gray-400 text-sm md:text-base leading-relaxed"
-                variants={fadeSlideUp}
+              <p
+                className="text-gray-400 text-sm md:text-base leading-relaxed fade-slide-up"
+                style={{ animationDelay: "0.5s" }}
               >
                 I connect front-end and back-end seamlessly using RESTful APIs,
                 manage state efficiently with Redux, and focus on secure,
                 scalable, and responsive web apps.
-              </motion.p>
+              </p>
 
               {/* Skills */}
               <div>
-                <motion.h3
-                  className="flex items-center gap-2 text-cyan-400 text-xs uppercase tracking-widest mb-3"
-                  variants={textVariants}
+                <h3
+                  className="flex items-center gap-2 text-cyan-400 text-xs uppercase tracking-widest mb-3 fade-slide-up"
+                  style={{ animationDelay: "0.6s" }}
                 >
                   <span>//</span>
                   <span>Tech_Stack</span>
-                </motion.h3>
-                <motion.ul
-                  className="flex flex-wrap gap-3"
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
+                </h3>
+                <ul className="flex flex-wrap gap-3">
                   {skills.map((skill, index) => (
-                    <motion.li
+                    <li
                       key={index}
                       title={skill}
-                      className="border border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-400 hover:text-black text-cyan-300 text-xs uppercase tracking-widest px-4 py-2 transition-colors duration-300 cursor-default"
-                      variants={textVariants}
+                      className="border border-cyan-500/30 bg-cyan-500/5 hover:bg-cyan-400 hover:text-black text-cyan-300 text-xs uppercase tracking-widest px-4 py-2 transition-colors duration-300 cursor-default fade-slide-up"
+                      style={{ animationDelay: `${0.7 + index * 0.05}s` }}
                     >
                       {skill}
-                    </motion.li>
+                    </li>
                   ))}
-                </motion.ul>
+                </ul>
               </div>
             </aside>
-          </motion.div>
+          </div>
 
           {/* 🔸 Right: Avatar */}
-          <motion.div
-            className="flex items-center justify-center order-1 lg:order-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2 }}
-          >
+          <div className="flex items-center justify-center order-1 lg:order-2 fade-in">
             <AvatarCard size="w-72 h-72 md:w-80 md:h-80" />
-          </motion.div>
+          </div>
         </section>
       </Container>
     </>

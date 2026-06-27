@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "vitest run"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -29,8 +29,8 @@
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
     "@eslint/js": "^9.25.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
@@ -43,10 +43,12 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.0.0",
     "jest-environment-jsdom": "^30.0.2",
+    "jsdom": "^29.1.1",
     "rollup-plugin-visualizer": "^6.0.3",
     "util": "^0.12.5",
     "vite": "^6.3.5",
     "vite-plugin-pwa": "^1.0.1",
-    "vite-plugin-sitemap": "^0.8.2"
+    "vite-plugin-sitemap": "^0.8.2",
+    "vitest": "^4.1.9"
   }
 }

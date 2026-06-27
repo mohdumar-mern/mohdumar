@@ -17,14 +17,28 @@ jobs:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install Dependencies
+
+      # Client
+      - name: Install Client Dependencies
+        run: cd client && npm install
+
+      - name: Run Client Lint
+        run: cd client && npm run lint
+
+      - name: Run Client Tests
+        run: cd client && npm test
+
+      # Server
+      - name: Install Server Dependencies
         run: cd server && npm install
-      - name: Run Tests
+
+      - name: Run Server Tests
         run: cd server && npm test
 
   deploy-client:
