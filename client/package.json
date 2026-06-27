@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node generate-sitemap.js && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest"
@@ -47,6 +47,7 @@
     "rollup-plugin-visualizer": "^6.0.3",
     "util": "^0.12.5",
     "vite": "^6.3.5",
-    "vite-plugin-pwa": "^1.0.1"
+    "vite-plugin-pwa": "^1.0.1",
+    "vite-plugin-sitemap": "^0.8.2"
   }
 }
