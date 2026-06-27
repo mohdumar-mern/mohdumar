@@ -43,13 +43,12 @@ const ProjectPage = () => {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1 },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
     <>
-      {/* 🔹 SEO Meta Tags */}
       <Helmet>
         <title>Projects | Mohd Umar - MERN Stack Developer</title>
         <meta
@@ -59,7 +58,6 @@ const ProjectPage = () => {
         <meta name="robots" content="index, follow" />
         <html lang="en" />
 
-        {/* 🧠 JSON-LD Structured Data */}
         {projects?.length > 0 && (
           <script type="application/ld+json">
             {JSON.stringify({
@@ -89,69 +87,90 @@ const ProjectPage = () => {
       </Helmet>
 
       <Container>
-        <main>
+        <main className="w-full">
           <motion.section
             initial="hidden"
             animate="visible"
             variants={containerVariants}
-            className="w-full min-h-screen py-12"
+            className="w-full min-h-screen py-12 font-mono"
           >
             {/* 🔸 Page Header */}
-            <motion.header variants={cardVariants} className="text-center mb-10">
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-2">
-                My <span className="text-orange-500">Projects</span>
+            <motion.header variants={cardVariants} className="mb-14">
+              <div className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest">
+                <span>//</span>
+                <span>Deployed_Systems</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl font-extrabold uppercase tracking-tight text-white mt-3">
+                PROJECT{" "}
+                <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                  LOG
+                </span>
               </h1>
-              <p className="text-gray-400">Some of the work I’ve done recently</p>
+
+              <div className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent mt-4" />
             </motion.header>
 
-            {/* 🔁 Loading Spinner */}
+            {/* 🔁 Loading */}
             {loading && (
               <motion.div variants={cardVariants} className="text-center mt-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
-                <p className="text-gray-400 mt-2">Loading projects...</p>
+                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-400 mx-auto"></div>
+                <p className="text-gray-500 text-sm uppercase tracking-widest mt-3">
+                  Loading_projects...
+                </p>
               </motion.div>
             )}
 
-            {/* ❌ Error Message */}
+            {/* ❌ Error */}
             {error && !loading && (
-              <motion.p variants={cardVariants} className="text-center text-red-500">
+              <motion.p
+                variants={cardVariants}
+                className="text-center text-pink-500 text-sm"
+              >
                 {error}
               </motion.p>
             )}
 
-            {/* ✅ Projects Grid */}
+            {/* ✅ Projects — 3-column grid, equal height rows */}
             {!loading && projects.length > 0 && (
               <motion.div
                 variants={containerVariants}
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
               >
-                {projects.map((proj) => (
-                  <motion.div key={proj._id} variants={cardVariants}>
-                    <ProjectCard
-                      image={proj.imageUrl}
-                      title={proj.title}
-                      description={proj.description}
-                      techStack={proj.techStack?.[0]}
-                      githubLink={proj.githubLink}
-                      liveDemo={proj.liveDemo}
-                      createdAt={proj.createdAt}
-                      updatedAt={proj.updatedAt}
-                    />
-                  </motion.div>
-                ))}
+             {projects.map((proj) => (
+  <motion.div
+    key={proj._id}
+    variants={cardVariants}
+    className="h-full"
+    whileHover={{ scale: 1.04 }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  >
+    <ProjectCard
+      image={proj.imageUrl}
+      title={proj.title}
+      description={proj.description}
+      techStack={proj.techStack}
+      githubLink={proj.githubLink}
+      liveDemo={proj.liveDemo}
+    />
+  </motion.div>
+))}
               </motion.div>
             )}
 
             {/* 🈳 No Projects */}
             {!loading && projects.length === 0 && (
-              <motion.p variants={cardVariants} className="text-center text-gray-400">
-                No projects found.
+              <motion.p
+                variants={cardVariants}
+                className="text-center text-gray-500 text-sm uppercase tracking-widest"
+              >
+                No_projects_found
               </motion.p>
             )}
 
             {/* 🔽 Pagination */}
             {totalPages > 1 && (
-              <motion.div variants={cardVariants} className="mt-10">
+              <motion.div variants={cardVariants} className="mt-14">
                 <Pagination
                   totalPages={totalPages}
                   currentPage={currentPage}
