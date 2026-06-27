@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import upload from "../middlewares/multerMiddleware.js";
+// import upload from "../middlewares/multerMiddleware.js";
 import {
   getSkills,
   getSingleSkill,
@@ -17,10 +17,10 @@ router.get("/", getSkills);
 router.get("/:id/view", getSingleSkill);
 
 // POST add new skill (uses "file" as the form field name for multer)
-router.post("/add", upload.single("file"), addSkill);
+router.post("/add",  addSkill);
 
 // PUT update skill (uses "file" as the field name to match controller)
-router.put("/:id/edit", upload.single("file"), updateSkill);
+router.put("/:id/edit", updateSkill);
 
 // DELETE skill
 router.delete("/:id", deleteSkill);

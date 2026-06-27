@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import upload from "../middlewares/multerMiddleware.js";
+// import upload from "../middlewares/multerMiddleware.js";
 import { protect } from "../middlewares/authMiddleware.js"; // 🔐 import protect middleware
 
 import {
@@ -18,10 +18,10 @@ import {
 router.post(
   "/add",
   protect, // ✅ protected
-  upload.fields([
-    { name: "avatar", maxCount: 1 },
-    { name: "resume", maxCount: 1 },
-  ]),
+  // upload.fields([
+  //   { name: "avatar", maxCount: 1 },
+  //   { name: "resume", maxCount: 1 },
+  // ]),
   addProfile
 );
 
@@ -30,10 +30,10 @@ router.post(
 router.put(
   "/:id/edit",
   protect, // ✅ protected
-  upload.fields([
-    { name: "avatar", maxCount: 1 },
-    { name: "resume", maxCount: 1 },
-  ]),
+  // upload.fields([
+  //   { name: "avatar", maxCount: 1 },
+  //   { name: "resume", maxCount: 1 },
+  // ]),
   updateProfile
 );
 
