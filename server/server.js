@@ -20,3 +20,6 @@ connectDB()
     console.error("Failed to connect to database", err.message);
     process.exit(1);
   });
+// setTimeout(() => {
+//   throw new Error("Simulated crash!");
+// }, 3000);
