@@ -33,8 +33,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
