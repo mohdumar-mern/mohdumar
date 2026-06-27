@@ -3,7 +3,7 @@ import Profile from "../models/profileModel.js";
 import path from "path";
 import axios from "axios";
 import { setCache, getCache, delCache } from "../utils/cache.js";
-import { deleteFileFromCloudinary } from "../config/cloudinary.js";
+// import { deleteFileFromCloudinary } from "../config/cloudinary.js";
 
 
 // @desc Create Profile
@@ -71,10 +71,10 @@ export const updateProfile = expressAsyncHandler(async (req, res) => {
 
   // Cloudinary cleanup
   if (avatarFile && profile.avatar?.public_id) {
-    await deleteFileFromCloudinary(profile.avatar.public_id);
+    // await deleteFileFromCloudinary(profile.avatar.public_id);
   }
   if (resumeFile && profile.resume?.public_id) {
-    await deleteFileFromCloudinary(profile.resume.public_id);
+    // await deleteFileFromCloudinary(profile.resume.public_id);
   }
 
   const updatedAvatar = avatarFile
