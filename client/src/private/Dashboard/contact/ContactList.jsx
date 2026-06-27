@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Eye, Trash } from "lucide-react";
+import { Eye, Trash, X } from "lucide-react";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import {
   deleteContactMessage,
@@ -69,89 +69,103 @@ const ContactList = () => {
   );
 
   return (
-    <div className="p-4">
-      {/* 🔹 SEO */}
+    <div className="font-mono">
       <Helmet>
         <title>Contact Messages | Admin Dashboard</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      {/* 🔹 Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-white">Contact Messages</h2>
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+          <span>//</span>
+          <span>Inbox</span>
+        </div>
+        <h2 className="text-xl font-bold uppercase tracking-tight text-white mt-1">
+          Contact_Messages
+        </h2>
       </div>
 
-      {/* 🔹 Success/Error Messages */}
+      {/* Status Message */}
       {(message || error) && (
         <div
-          className={`mb-4 p-3 rounded-md relative ${
-            error ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+          className={`mb-4 px-4 py-3 border text-sm relative pr-10 ${
+            error
+              ? "border-pink-500/30 bg-pink-500/10 text-pink-300"
+              : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
           }`}
         >
           {message || error}
           <button
             onClick={() => dispatch(clearContactStatus())}
-            className="absolute right-3 top-1 text-xl font-bold"
+            className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition"
             aria-label="Close message"
           >
-            &times;
+            <X size={16} />
           </button>
         </div>
       )}
 
-      {/* 🔹 Loading */}
+      {/* Loading */}
       {loading && <Skeleton rows={6} cols={4} />}
 
-      {/* 🔹 Empty State */}
+      {/* Empty State */}
       {!loading && contacts?.length === 0 && (
-        <p className="text-center text-gray-600">No contact messages found.</p>
+        <p className="text-center text-gray-500 text-sm uppercase tracking-widest">
+          No_messages_found
+        </p>
       )}
 
-      {/* 🔹 Table */}
+      {/* Table */}
       {!loading && contacts?.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-gray-300">
-            <thead className="bg-gray-100 text-gray-900">
+        <div className="overflow-x-auto border border-cyan-500/15">
+          <table className="min-w-full text-sm">
+            <thead className="bg-cyan-500/5 text-cyan-300 text-xs uppercase tracking-widest">
               <tr>
-                <th className="px-4 py-2 border" scope="col">
-                  Sr No
+                <th className="px-4 py-3 text-left" scope="col">
+                  Sr_No
                 </th>
-                <th className="px-4 py-2 border" scope="col">
+                <th className="px-4 py-3 text-left" scope="col">
                   Name
                 </th>
-                <th className="px-4 py-2 border" scope="col">
+                <th className="px-4 py-3 text-left" scope="col">
                   Email
                 </th>
-                <th className="px-4 py-2 border" scope="col">
+                <th className="px-4 py-3 text-center" scope="col">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody>
               {contacts.map((contact, index) => (
-                <tr key={contact._id} className="hover:bg-[#111] text-gray-300">
-                  <td className="px-4 py-2 border">{index + 1}</td>
-                  <td className="px-4 py-2 border">{contact.name}</td>
-                  <td className="px-4 py-2 border">{contact.email}</td>
-                  <td className="px-4 py-2 border text-center">
-                    <button
-                      title="View"
-                      aria-label="View Contact"
-                      className="text-green-600 hover:text-green-800 transition mr-2"
-                      onClick={() =>
-                        navigate(`/dashboard/contacts/${contact._id}/view`)
-                      }
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      title="Delete"
-                      aria-label="Delete Contact"
-                      className="text-red-600 hover:text-red-800 transition"
-                      onClick={() => handleDelete(contact._id)}
-                    >
-                      <Trash size={18} />
-                    </button>
+                <tr
+                  key={contact._id}
+                  className="hover:bg-cyan-500/5 text-gray-300 border-b border-cyan-500/10"
+                >
+                  <td className="px-4 py-3 text-gray-500">{index + 1}</td>
+                  <td className="px-4 py-3 text-white">{contact.name}</td>
+                  <td className="px-4 py-3 text-gray-400">{contact.email}</td>
+                  <td className="px-4 py-3 text-center">
+                    <div className="flex justify-center items-center gap-4">
+                      <button
+                        title="View"
+                        aria-label="View Contact"
+                        className="text-emerald-400 hover:text-emerald-300 transition"
+                        onClick={() =>
+                          navigate(`/dashboard/contacts/${contact._id}/view`)
+                        }
+                      >
+                        <Eye size={16} />
+                      </button>
+                      <button
+                        title="Delete"
+                        aria-label="Delete Contact"
+                        className="text-pink-400 hover:text-pink-300 transition"
+                        onClick={() => handleDelete(contact._id)}
+                      >
+                        <Trash size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -160,13 +174,15 @@ const ContactList = () => {
         </div>
       )}
 
-      {/* 🔹 Pagination */}
+      {/* Pagination */}
       {!loading && totalPages > 1 && (
-        <Pagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+        <div className="mt-6">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       )}
     </div>
   );

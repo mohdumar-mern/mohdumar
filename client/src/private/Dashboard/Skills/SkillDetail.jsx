@@ -16,60 +16,72 @@ const SkillDetail = () => {
   }, [dispatch, id]);
 
   const renderDetailItem = (label, value) => (
-    <p className=" text-base mb-2">
-      <span className="font-medium text-gray-300">{label}:</span>{" "}
-      {value || "N/A"}
-    </p>
+    <div className="text-sm mb-2">
+      <span className="text-xs uppercase tracking-widest text-gray-500">
+        {label}:{" "}
+      </span>
+      <span className="text-cyan-300">{value || "N/A"}</span>
+    </div>
   );
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-slate-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500" />
+      <div className="flex justify-center items-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-400" />
       </div>
     );
   }
-  if (error) return <p className="text-red-500 text-center">{error}</p>;
+  if (error)
+    return <p className="text-pink-500 text-center text-sm">{error}</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      {/* Skill Detail Card */}
+    <div className="max-w-3xl mx-auto font-mono">
       {skill && (
-        <div className=" rounded-2xl shadow-lg p-6">
-          <h2 className="text-3xl font-bold  mb-6">{skill.title}</h2>
+        <div
+          className="border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6 sm:p-8"
+          style={{
+            clipPath: "polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%)",
+          }}
+        >
+          <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest mb-2">
+            <span>//</span>
+            <span>Skill_Record</span>
+          </div>
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-5">
+            {skill.title}
+          </h2>
+
+          {skill.file?.url && (
+            <img
+              src={skill.file.url}
+              alt={skill.title || "Skill"}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="high"
+              className="w-32 h-32 rounded-full object-cover border-2 border-cyan-500/40 shadow-[0_0_16px_rgba(34,211,238,0.25)] mb-6"
+            />
+          )}
 
           {renderDetailItem("Category", skill.category)}
           {renderDetailItem("Level", skill.level)}
           {renderDetailItem(
-            "Date Added",
+            "Date_Added",
             skill.createdAt
               ? new Date(skill.createdAt).toLocaleDateString()
               : "N/A"
           )}
 
-          {skill.file?.url && (
-            <div className="mt-6 rounded-xl overflow-hidden ">
-              <img
-                src={skill.file.url}
-                alt={skill.title || "Skill"}
-                loading="lazy"
-                decoding="async"
-                fetchpriority="high"
-                className="w-64 h-auto object-cover "
-              />
-            </div>
-          )}
-
           {/* Action Buttons */}
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="mt-6 pt-4 border-t border-cyan-500/10">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+              className="flex items-center gap-2 bg-cyan-400 text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:bg-cyan-300 transition"
+              style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
             >
-              <ChevronLeft size={18} />
-              Back to Skills List
+              <ChevronLeft size={16} />
+              Back_to_Skills
             </button>
-           
           </div>
         </div>
       )}

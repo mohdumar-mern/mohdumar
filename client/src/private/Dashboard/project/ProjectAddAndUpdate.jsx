@@ -6,7 +6,6 @@ import {
   CaptionsIcon,
   ChevronLeft,
   Github,
-  Image,
   Layers,
   Link,
 } from "lucide-react";
@@ -47,7 +46,7 @@ const ProjectAddUpdate = () => {
         techStack: existingProject.techStack || "",
         githubLink: existingProject.githubLink || "",
         liveDemo: existingProject.liveDemo || "",
-        imageUrl: existingProject.imageUrl || ""
+        imageUrl: existingProject.imageUrl || "",
       });
     }
   }, [isEditing, existingProject]);
@@ -67,19 +66,11 @@ const ProjectAddUpdate = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
-  // const handleFileChange = useCallback((e) => {
-  //   setFormData((prev) => ({ ...prev, file: e.target.files[0] }));
-  // }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
-      if (key === "file" && value) {
-        form.append("file", value);
-      } else {
-        form.append(key, value);
-      }
+      form.append(key, value);
     });
 
     try {
@@ -97,25 +88,58 @@ const ProjectAddUpdate = () => {
   const renderInput = (props) => <Input {...props} />;
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-black rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto font-mono">
       <button
         onClick={() => navigate("/dashboard/projects")}
-        className="text-white font-semibold text-lg mb-4 inline-flex items-center"
+        className="text-gray-400 hover:text-cyan-400 text-sm uppercase tracking-widest mb-6 inline-flex items-center transition"
       >
-        <ChevronLeft className="mr-1" />
-        Back to Projects
+        <ChevronLeft className="w-4 h-4 mr-1" />
+        Back_to_Projects
       </button>
 
-      <h2 className="text-2xl font-bold mb-6 text-orange-500">
-        {isEditing ? "Update Project" : "Add New Project"}
+      <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+        <span>//</span>
+        <span>{isEditing ? "Modify_Record" : "New_Record"}</span>
+      </div>
+
+      <h2 className="text-2xl font-extrabold uppercase tracking-tight text-white mt-2 mb-6">
+        {isEditing ? (
+          <>
+            UPDATE{" "}
+            <span className="text-cyan-400 drop-shadow-[0_0_14px_rgba(34,211,238,0.5)]">
+              PROJECT
+            </span>
+          </>
+        ) : (
+          <>
+            ADD{" "}
+            <span className="text-cyan-400 drop-shadow-[0_0_14px_rgba(34,211,238,0.5)]">
+              PROJECT
+            </span>
+          </>
+        )}
       </h2>
 
-      {error && <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">{error}</div>}
-      {message && <div className="mb-4 p-3 bg-green-100 text-green-700 rounded">{message}</div>}
+      {error && (
+        <div className="mb-4 px-4 py-3 border border-pink-500/30 bg-pink-500/10 text-pink-300 text-sm">
+          {error}
+        </div>
+      )}
+      {message && (
+        <div className="mb-4 px-4 py-3 border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm">
+          {message}
+        </div>
+      )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6 border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6 sm:p-8"
+        style={{
+          clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)",
+        }}
+      >
         {renderInput({
-          label: "Project Title",
+          label: "Project_Title",
           type: "text",
           name: "title",
           placeholder: "Enter project title",
@@ -126,25 +150,33 @@ const ProjectAddUpdate = () => {
         })}
 
         {/* Description */}
-        <div className="space-y-2 relative">
-          <label htmlFor="description" className="block font-medium text-[#BDC3C7]">
-            Project Description
+        <div className="relative">
+          <label
+            htmlFor="description"
+            className="block text-xs uppercase tracking-widest text-gray-500 mb-2"
+          >
+            Project_Description
           </label>
-          <CaptionsIcon className="absolute left-3 top-10 text-orange-500 w-5 h-5" />
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Enter project description"
-            rows="4"
-            required
-            className="w-full pl-10 pr-4 py-2 border text-white bg-transparent border-orange-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none transition"
-          />
+          <div className="relative">
+            <CaptionsIcon className="absolute left-3 top-3.5 z-10 pointer-events-none text-pink-400 w-4 h-4" />
+            <textarea
+              id="description"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              placeholder="Enter project description"
+              rows="4"
+              required
+              className="w-full pl-10 pr-4 py-3 bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition resize-none"
+              style={{
+                clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+              }}
+            />
+          </div>
         </div>
 
         {renderInput({
-          label: "Tech Stack",
+          label: "Tech_Stack",
           type: "text",
           name: "techStack",
           placeholder: "E.g. React, Node.js, MongoDB",
@@ -154,7 +186,7 @@ const ProjectAddUpdate = () => {
         })}
 
         {renderInput({
-          label: "GitHub Link",
+          label: "Github_Link",
           type: "text",
           name: "githubLink",
           placeholder: "https://github.com/your-repo",
@@ -164,7 +196,7 @@ const ProjectAddUpdate = () => {
         })}
 
         {renderInput({
-          label: "Live Demo URL",
+          label: "Live_Demo_URL",
           type: "text",
           name: "liveDemo",
           placeholder: "https://yourdemo.com",
@@ -174,7 +206,7 @@ const ProjectAddUpdate = () => {
         })}
 
         {renderInput({
-          label: "Project Image Url",
+          label: "Project_Image_URL",
           type: "text",
           name: "imageUrl",
           placeholder: "Enter project image url",
@@ -183,19 +215,20 @@ const ProjectAddUpdate = () => {
           icon: Link,
         })}
 
-        <div className="text-center pt-4">
+        <div className="pt-2">
           <button
             type="submit"
             disabled={loading}
-            className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300 disabled:opacity-50"
+            className="w-full bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 hover:bg-cyan-300 transition disabled:opacity-50"
+            style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
           >
             {loading
               ? isEditing
                 ? "Updating..."
                 : "Adding..."
               : isEditing
-              ? "Update Project"
-              : "Add Project"}
+              ? "Update_Project"
+              : "Add_Project"}
           </button>
         </div>
       </form>

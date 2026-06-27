@@ -1,15 +1,13 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Trash, Eye } from "lucide-react";
+import { Trash, Eye, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import {
   deleteservice,
   fetchServices,
-  // clearError,
-  // clearMessage,
 } from "../../../features/service/serviceSlice";
 import Skeleton from "../../../components/UI/Skeleton/TableSkeleton";
 
@@ -21,23 +19,10 @@ const ServicesList = () => {
     (state) => state.service
   );
 
-  // Fetch services
   useEffect(() => {
     dispatch(fetchServices());
   }, [dispatch]);
 
-  // Clear messages and errors after a short delay
-  useEffect(() => {
-    if (error || message) {
-      const timer = setTimeout(() => {
-        // dispatch(clearError());
-        // dispatch(clearMessage());
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [error, message, dispatch]);
-
-  // Delete service handler
   const handleDelete = useCallback(
     (id) => {
       if (window.confirm("Are you sure you want to delete this service?")) {
@@ -75,26 +60,36 @@ const ServicesList = () => {
         />
       </Helmet>
 
-      <div className="p-4">
+      <div className="font-mono">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-white">Services List</h2>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+              <span>//</span>
+              <span>Registry</span>
+            </div>
+            <h2 className="text-xl font-bold uppercase tracking-tight text-white mt-1">
+              Services_List
+            </h2>
+          </div>
           <button
             onClick={handleAddService}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
+            className="flex items-center gap-2 bg-cyan-400 text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:bg-cyan-300 transition"
+            style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
           >
-            + Add Service
+            <Plus className="w-4 h-4" />
+            Add_Service
           </button>
         </div>
 
         {/* Feedback Message */}
         {message && !loading && (
-          <div className="mb-4 p-3 rounded bg-green-100 text-green-700 text-center">
+          <div className="mb-4 px-4 py-3 border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm text-center">
             {message}
           </div>
         )}
         {error && !loading && (
-          <div className="mb-4 p-3 rounded bg-red-100 text-red-700 text-center">
+          <div className="mb-4 px-4 py-3 border border-pink-500/30 bg-pink-500/10 text-pink-300 text-sm text-center">
             {error}
           </div>
         )}
@@ -104,57 +99,59 @@ const ServicesList = () => {
 
         {/* Empty state */}
         {!loading && services?.length === 0 && (
-          <div className="text-center py-4 text-gray-600">
-            <p>No services found.</p>
+          <div className="text-center py-8">
+            <p className="text-gray-500 text-sm uppercase tracking-widest">
+              No_services_found
+            </p>
             <button
               onClick={handleAddService}
-              className="mt-4 text-orange-600 hover:text-orange-800 transition"
+              className="mt-3 text-cyan-400 hover:text-cyan-300 text-xs uppercase tracking-widest transition"
             >
-              + Add Your First Service
+              + Add_Your_First_Service
             </button>
           </div>
         )}
 
         {/* Table */}
         {!loading && services?.length > 0 && (
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-orange-300">
-              <thead className="bg-orange-100 text-black">
+          <div className="overflow-x-auto border border-cyan-500/15">
+            <table className="min-w-full text-sm">
+              <thead className="bg-cyan-500/5 text-cyan-300 text-xs uppercase tracking-widest">
                 <tr>
-                  <th className="px-4 py-2 border">Sr. No</th>
-                  <th className="px-4 py-2 border">Title</th>
-                  <th className="px-4 py-2 border">Created At</th>
-                  <th className="px-4 py-2 border">Actions</th>
+                  <th className="px-4 py-3 text-left">Sr_No</th>
+                  <th className="px-4 py-3 text-left">Title</th>
+                  <th className="px-4 py-3 text-left">Created</th>
+                  <th className="px-4 py-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {services.map((service, index) => (
                   <tr
                     key={service?._id}
-                    className="hover:bg-[#111] text-gray-300"
+                    className="hover:bg-cyan-500/5 text-gray-300 border-b border-cyan-500/10"
                   >
-                    <td className="px-4 py-2 border">{index + 1}</td>
-                    <td className="px-4 py-2 border">{service?.title}</td>
-                    <td className="px-4 py-2 border">
+                    <td className="px-4 py-3 text-gray-500">{index + 1}</td>
+                    <td className="px-4 py-3 text-white">{service?.title}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs">
                       {service?.createdAt
                         ? new Date(service.createdAt).toLocaleDateString()
                         : "N/A"}
                     </td>
-                    <td className="px-4 py-2 border text-center">
-                      <div className="flex justify-center items-center gap-3">
+                    <td className="px-4 py-3 text-center">
+                      <div className="flex justify-center items-center gap-4">
                         <button
-                          className="text-blue-600 hover:text-blue-800 transition"
+                          className="text-emerald-400 hover:text-emerald-300 transition"
                           title="View"
                           onClick={() => handleView(service._id)}
                         >
-                          <Eye size={18} />
+                          <Eye size={16} />
                         </button>
                         <button
-                          className="text-red-600 hover:text-red-800 transition"
+                          className="text-pink-400 hover:text-pink-300 transition"
                           title="Delete"
                           onClick={() => handleDelete(service._id)}
                         >
-                          <Trash size={18} />
+                          <Trash size={16} />
                         </button>
                       </div>
                     </td>

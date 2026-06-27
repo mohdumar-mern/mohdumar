@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, Cog, Image } from "lucide-react";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 import { addService } from "../../../features/service/serviceSlice";
 import Input from "../../../components/UI/Input/Input";
@@ -60,22 +60,36 @@ const AddService = () => {
         />
       </Helmet>
 
-      <div className="max-w-md mx-auto p-6 bg-black rounded-lg shadow text-white">
+      <div className="max-w-md mx-auto font-mono">
         <button
           onClick={() => navigate("/dashboard/services")}
-          className="text-white font-semibold text-lg mb-4 inline-flex items-center"
+          className="text-gray-400 hover:text-cyan-400 text-sm uppercase tracking-widest mb-6 inline-flex items-center transition"
         >
-          <ChevronLeft className="mr-1" />
-          Back to Services
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back_to_Services
         </button>
 
-        <h2 className="text-2xl font-semibold mb-6 text-orange-500">
-          Add New Service
+        <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+          <span>//</span>
+          <span>New_Record</span>
+        </div>
+
+        <h2 className="text-2xl font-extrabold uppercase tracking-tight text-white mt-2 mb-6">
+          ADD{" "}
+          <span className="text-cyan-400 drop-shadow-[0_0_14px_rgba(34,211,238,0.5)]">
+            SERVICE
+          </span>
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5 border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6"
+          style={{
+            clipPath: "polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%)",
+          }}
+        >
           <Input
-            label="Service Title"
+            label="Service_Title"
             placeholder="Enter service title"
             type="text"
             name="title"
@@ -86,20 +100,25 @@ const AddService = () => {
           />
 
           <div>
-            <label className="block mb-1 text-[#BDC3C7]">Description</label>
+            <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+              Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               placeholder="Enter service description"
               required
-              className="w-full bg-black border border-orange-500 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               rows="4"
-            ></textarea>
+              className="w-full px-4 py-3 bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 placeholder-gray-600 text-sm focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition resize-none"
+              style={{
+                clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+              }}
+            />
           </div>
 
           <Input
-            label="Service Image"
+            label="Service_Image"
             type="file"
             name="file"
             onChange={handleFileChange}
@@ -109,16 +128,21 @@ const AddService = () => {
           />
 
           <div>
-            <label className="block mb-1 text-[#BDC3C7]">Category</label>
+            <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+              Category
+            </label>
             <select
               name="category"
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full bg-black border border-orange-500 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 text-sm px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition"
+              style={{
+                clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+              }}
             >
               {categories.map((cat) => (
-                <option key={cat} value={cat} className="bg-black text-orange-500">
+                <option key={cat} value={cat} className="bg-black text-cyan-300">
                   {cat}
                 </option>
               ))}
@@ -126,17 +150,22 @@ const AddService = () => {
           </div>
 
           <div>
-            <label className="block mb-1 text-[#BDC3C7]">Status</label>
+            <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+              Status
+            </label>
             <select
               name="status"
               value={formData.status}
               onChange={handleChange}
-              className="w-full bg-black border border-orange-500 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 text-sm px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition"
+              style={{
+                clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+              }}
             >
-              <option value="active" className="bg-black text-orange-500">
+              <option value="active" className="bg-black text-cyan-300">
                 Active
               </option>
-              <option value="inactive" className="bg-black text-orange-500">
+              <option value="inactive" className="bg-black text-cyan-300">
                 Inactive
               </option>
             </select>
@@ -144,15 +173,16 @@ const AddService = () => {
 
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600 transition disabled:opacity-50"
             disabled={loading}
+            className="w-full bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 hover:bg-cyan-300 transition disabled:opacity-50"
+            style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
           >
-            {loading ? "Adding..." : "Add Service"}
+            {loading ? "Adding..." : "Add_Service"}
           </button>
         </form>
 
         {message && (
-          <p className="mt-4 text-center text-green-500 font-medium">
+          <p className="mt-4 text-center text-emerald-400 text-sm">
             {message}
           </p>
         )}

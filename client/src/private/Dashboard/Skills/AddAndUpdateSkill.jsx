@@ -3,14 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChevronLeft, Code, Image } from "lucide-react";
 import Input from "../../../components/UI/Input/Input";
-import { addSkill,  resetSkillsState } from "../../../features/Skills/skillSlice";
+import { addSkill, resetSkillsState } from "../../../features/Skills/skillSlice";
 
 const AddAndUpdateSkill = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-
- 
 
   const { loading, error, message } = useSelector((state) => state.skill);
 
@@ -23,9 +21,6 @@ const AddAndUpdateSkill = () => {
     file: null,
   });
 
-
-
-  // Clear messages after 3 seconds
   useEffect(() => {
     if (message || error) {
       const timer = setTimeout(() => {
@@ -59,8 +54,7 @@ const AddAndUpdateSkill = () => {
     }
 
     try {
-    
-        await dispatch(addSkill(formPayload)).unwrap();
+      await dispatch(addSkill(formPayload)).unwrap();
       navigate("/dashboard/skills");
     } catch (err) {
       console.error(isEditing ? "Update failed:" : "Add failed:", err);
@@ -68,22 +62,36 @@ const AddAndUpdateSkill = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-black rounded-lg shadow">
+    <div className="max-w-md mx-auto font-mono">
       <button
         onClick={() => navigate("/dashboard/skills")}
-        className="text-white font-semibold text-lg mb-4 inline-flex items-center"
+        className="text-gray-400 hover:text-cyan-400 text-sm uppercase tracking-widest mb-6 inline-flex items-center transition"
       >
-        <ChevronLeft className="mr-1" />
-        Back to Skills
+        <ChevronLeft className="w-4 h-4 mr-1" />
+        Back_to_Skills
       </button>
 
-      <h2 className="text-2xl font-semibold mb-4 text-orange-500">
-      Add Skill
+      <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+        <span>//</span>
+        <span>{isEditing ? "Modify_Record" : "New_Record"}</span>
+      </div>
+
+      <h2 className="text-2xl font-extrabold uppercase tracking-tight text-white mt-2 mb-6">
+        {isEditing ? "UPDATE" : "ADD"}{" "}
+        <span className="text-cyan-400 drop-shadow-[0_0_14px_rgba(34,211,238,0.5)]">
+          SKILL
+        </span>
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6"
+        style={{
+          clipPath: "polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%)",
+        }}
+      >
         <Input
-          label="Skill Name"
+          label="Skill_Name"
           placeholder="Enter skill name"
           type="text"
           name="title"
@@ -91,19 +99,23 @@ const AddAndUpdateSkill = () => {
           onChange={handleChange}
           icon={Code}
           required
-          className="w-full border border-gray-300 rounded p-2"
         />
 
         <div>
-          <label className="block mb-1 text-[#BDC3C7]">Level</label>
+          <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+            Level
+          </label>
           <select
             name="level"
             value={formData.level}
             onChange={handleChange}
-            className="w-full bg-black border border-orange-500 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 text-sm px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition"
+            style={{
+              clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+            }}
           >
             {levels.map((level) => (
-              <option key={level} value={level} className="bg-black text-orange-500">
+              <option key={level} value={level} className="bg-black text-cyan-300">
                 {level}
               </option>
             ))}
@@ -111,7 +123,7 @@ const AddAndUpdateSkill = () => {
         </div>
 
         <Input
-          label="Skill Image"
+          label="Skill_Image"
           type="file"
           name="file"
           onChange={handleFileChange}
@@ -121,15 +133,20 @@ const AddAndUpdateSkill = () => {
         />
 
         <div>
-          <label className="block mb-1 text-[#BDC3C7]">Category</label>
+          <label className="block text-xs uppercase tracking-widest text-gray-500 mb-2">
+            Category
+          </label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full bg-black border border-orange-500 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full bg-[#0a0f17] border border-cyan-500/15 text-cyan-100 text-sm px-4 py-3 focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/30 transition"
+            style={{
+              clipPath: "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
+            }}
           >
             {categories.map((cat) => (
-              <option key={cat} value={cat} className="bg-black text-orange-500">
+              <option key={cat} value={cat} className="bg-black text-cyan-300">
                 {cat}
               </option>
             ))}
@@ -139,16 +156,19 @@ const AddAndUpdateSkill = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-2 rounded ${
-            loading ? "bg-orange-600 cursor-not-allowed" : "bg-orange-600 hover:bg-orange-700"
-          } text-white`}
+          className="w-full bg-cyan-400 text-black font-bold uppercase tracking-widest text-sm py-3 hover:bg-cyan-300 transition disabled:opacity-50"
+          style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
         >
-          {loading ?  "Adding..."  : "Add Skill"}
+          {loading ? "Adding..." : "Add_Skill"}
         </button>
       </form>
 
-      {message && <p className="mt-4 text-center text-green-600">{message}</p>}
-      {error && <p className="mt-2 text-center text-red-500">{error}</p>}
+      {message && (
+        <p className="mt-4 text-center text-emerald-400 text-sm">{message}</p>
+      )}
+      {error && (
+        <p className="mt-2 text-center text-pink-500 text-sm">{error}</p>
+      )}
     </div>
   );
 };

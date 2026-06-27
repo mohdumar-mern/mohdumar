@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Trash, Eye, Edit } from "lucide-react";
+import { Trash, Eye, Edit, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { fetchSkills, deleteSkill } from "../../../features/Skills/skillSlice";
 import Skeleton from "../../../components/UI/Skeleton/TableSkeleton";
@@ -33,19 +33,29 @@ const SkillsList = () => {
   };
 
   const handleAddSkill = () => {
-    navigate("/dashboard/skills/add"); // ✅ Make sure this route exists
+    navigate("/dashboard/skills/add");
   };
 
   return (
-    <div className="p-4">
+    <div className="font-mono">
       {/* Top Bar */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold text-white">Skills List</h2>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest">
+            <span>//</span>
+            <span>Registry</span>
+          </div>
+          <h2 className="text-xl font-bold uppercase tracking-tight text-white mt-1">
+            Skills_List
+          </h2>
+        </div>
         <button
           onClick={handleAddSkill}
-          className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 transition"
+          className="flex items-center gap-2 bg-cyan-400 text-black text-xs font-bold uppercase tracking-widest px-5 py-2.5 hover:bg-cyan-300 transition"
+          style={{ clipPath: "polygon(6% 0, 100% 0, 94% 100%, 0% 100%)" }}
         >
-          + Add Skill
+          <Plus className="w-4 h-4" />
+          Add_Skill
         </button>
       </div>
 
@@ -54,60 +64,64 @@ const SkillsList = () => {
 
       {/* Error */}
       {error && !loading && (
-        <p className="text-red-600 text-center py-4">{error}</p>
+        <p className="text-pink-500 text-center text-sm py-4">{error}</p>
       )}
 
       {/* Empty */}
       {!loading && skills.length === 0 && (
-        <p className="text-center text-gray-600">No projects found.</p>
+        <p className="text-center text-gray-500 text-sm uppercase tracking-widest">
+          No_skills_found
+        </p>
       )}
 
       {!loading && skills?.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="min-w-full border border-orange-300">
-            <thead className="bg-orange-100 text-black">
+        <div className="overflow-x-auto border border-cyan-500/15">
+          <table className="min-w-full text-sm">
+            <thead className="bg-cyan-500/5 text-cyan-300 text-xs uppercase tracking-widest">
               <tr>
-                <th className="px-4 py-2 border">Srno</th>
-                <th className="px-4 py-2 border">Name</th>
-                <th className="px-4 py-2 border">Date</th>
-                <th className="px-4 py-2 border">Actions</th>
+                <th className="px-4 py-3 text-left">Sr_No</th>
+                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-left">Date</th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {skills.map((skill, index) => (
-                <tr key={skill?._id} className="hover:bg-[#111] text-gray-300">
-                  <td className="px-4 py-2 border">{index + 1}</td>
-                  <td className="px-4 py-2 border">{skill?.title}</td>
-
-                  <td className="px-4 py-2 border">
+                <tr
+                  key={skill?._id}
+                  className="hover:bg-cyan-500/5 text-gray-300 border-b border-cyan-500/10"
+                >
+                  <td className="px-4 py-3 text-gray-500">{index + 1}</td>
+                  <td className="px-4 py-3 text-white">{skill?.title}</td>
+                  <td className="px-4 py-3 text-gray-500 text-xs">
                     {skill?.createdAt
                       ? new Date(skill.createdAt).toLocaleDateString()
                       : "N/A"}
                   </td>
-                  <td className="px-4 py-2 border text-center">
-                    <div className="flex justify-center items-center gap-3">
+                  <td className="px-4 py-3 text-center">
+                    <div className="flex justify-center items-center gap-4">
                       <button
                         title="Edit"
-                        className="text-blue-600 hover:text-blue-800 transition"
+                        className="text-cyan-400 hover:text-cyan-300 transition"
                         onClick={() =>
                           navigate(`/dashboard/skills/${skill._id}/edit`)
                         }
                       >
-                        <Edit size={18} />
+                        <Edit size={16} />
                       </button>
                       <button
-                        className="text-green-600 hover:text-green-800 transition"
+                        className="text-emerald-400 hover:text-emerald-300 transition"
                         title="View"
                         onClick={() => handleView(skill._id)}
                       >
-                        <Eye size={18} />
+                        <Eye size={16} />
                       </button>
                       <button
-                        className="text-red-600 hover:text-red-800 transition"
+                        className="text-pink-400 hover:text-pink-300 transition"
                         title="Delete"
                         onClick={() => handleDelete(skill._id)}
                       >
-                        <Trash size={18} />
+                        <Trash size={16} />
                       </button>
                     </div>
                   </td>

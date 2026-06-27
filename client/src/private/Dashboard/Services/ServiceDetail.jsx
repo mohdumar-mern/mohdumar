@@ -4,7 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import { fetchSingleService } from "../../../features/service/serviceSlice";
 
-import { Helmet } from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 
 const ServiceDetail = () => {
   const { id } = useParams();
@@ -19,23 +19,30 @@ const ServiceDetail = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-slate-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500" />
+      <div className="flex justify-center items-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-400" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center text-red-500 py-8 font-semibold">
+      <div className="text-center text-pink-500 py-8 text-sm font-mono">
         {error}
+      </div>
+    );
+  }
+
+  if (!service) {
+    return (
+      <div className="text-center text-gray-500 py-8 text-sm uppercase tracking-widest font-mono">
+        No_service_found
       </div>
     );
   }
 
   return (
     <>
-      {/* ✅ SEO Helmet */}
       <Helmet>
         <title>{`${service?.title || "Service Detail"} | Mohd Umar`}</title>
         <meta
@@ -44,52 +51,64 @@ const ServiceDetail = () => {
         />
       </Helmet>
 
-      <main className="max-w-3xl mx-auto p-6">
-        <section className="bg-black rounded-2xl shadow-xl p-6 text-white">
-          <h1 className="text-3xl font-bold mb-4 text-orange-500">
+      <div className="max-w-3xl mx-auto font-mono">
+        <button
+          onClick={() => navigate(-1)}
+          className="text-gray-400 hover:text-cyan-400 text-sm uppercase tracking-widest mb-6 inline-flex items-center transition"
+        >
+          <ChevronLeft className="w-4 h-4 mr-1" />
+          Back_to_Services
+        </button>
+
+        <div
+          className="border border-cyan-500/15 bg-gradient-to-b from-cyan-950/10 to-black p-6 sm:p-8"
+          style={{
+            clipPath: "polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%)",
+          }}
+        >
+          <div className="flex items-center gap-2 text-pink-500 text-[11px] uppercase tracking-widest mb-2">
+            <span>//</span>
+            <span>Service_Record</span>
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white mb-5">
             {service.title}
           </h1>
 
-          <div className="space-y-2 text-sm sm:text-base text-gray-300">
-            <p>
-              <strong>Category:</strong> {service.category || "N/A"}
-            </p>
-            <p>
-              <strong>Description:</strong> {service.description || "N/A"}
-            </p>
-            <p>
-              <strong>Date Added:</strong>{" "}
+          {service?.file?.url && (
+            <img
+              src={service.file.url}
+              alt={service.title}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="high"
+              className="w-32 h-32 rounded-full object-cover border-2 border-cyan-500/40 shadow-[0_0_16px_rgba(34,211,238,0.25)] mb-6"
+            />
+          )}
+
+          <div className="text-sm mb-2">
+            <span className="text-xs uppercase tracking-widest text-gray-500">
+              Category:{" "}
+            </span>
+            <span className="text-cyan-300">{service.category || "N/A"}</span>
+          </div>
+
+          <p className="text-gray-400 text-sm leading-relaxed mt-3 mb-2">
+            {service.description || "N/A"}
+          </p>
+
+          <div className="text-sm mb-6">
+            <span className="text-xs uppercase tracking-widest text-gray-500">
+              Date_Added:{" "}
+            </span>
+            <span className="text-cyan-300">
               {service.createdAt
                 ? new Date(service.createdAt).toLocaleDateString()
                 : "N/A"}
-            </p>
+            </span>
           </div>
-
-          {service?.file?.url && (
-            <div className="mt-6">
-              <img
-                src={service.file.url}
-                alt={service.title}
-                loading="lazy"
-                decoding="async"
-                fetchpriority="high"
-                className="rounded-lg shadow-lg max-w-xs w-full"
-              />
-            </div>
-          )}
-
-          {/* Back Button */}
-          <div className="mt-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg text-white transition"
-            >
-              <ChevronLeft size={18} />
-              Back to Services List
-            </button>
-          </div>
-        </section>
-      </main>
+        </div>
+      </div>
     </>
   );
 };
