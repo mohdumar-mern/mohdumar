@@ -13,7 +13,7 @@ const SkillPage = () => {
   const { skills = [], error, loading } = useSelector((state) => state.skill);
 
   useEffect(() => {
-    if(!skills.length){
+    if (!skills.length) {
       dispatch(fetchSkills());
     }
   }, [dispatch]);
@@ -30,12 +30,11 @@ const SkillPage = () => {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      transition: { duration: 0.3 },
+      transition: { duration: 0.4 },
     },
   };
 
@@ -43,15 +42,17 @@ const SkillPage = () => {
     if (loading) {
       return (
         <div className="text-center mt-12 col-span-full">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500 mx-auto"></div>
-          <p className="text-gray-400 mt-2">Loading skills...</p>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-cyan-400 mx-auto"></div>
+          <p className="text-gray-500 text-sm uppercase tracking-widest mt-3">
+            Loading_skills...
+          </p>
         </div>
       );
     }
 
     if (error) {
       return (
-        <p className="text-red-500 text-center col-span-full font-semibold text-lg">
+        <p className="text-pink-500 text-center col-span-full text-sm">
           {error}
         </p>
       );
@@ -59,8 +60,8 @@ const SkillPage = () => {
 
     if (!skills.length) {
       return (
-        <p className="text-white text-center col-span-full mt-8">
-          No skills available at the moment.
+        <p className="text-gray-500 text-center col-span-full mt-8 text-sm uppercase tracking-widest">
+          No_skills_available
         </p>
       );
     }
@@ -72,16 +73,22 @@ const SkillPage = () => {
         initial="hidden"
         animate="visible"
       >
-        {skills.map((skill) => (
-          <motion.div key={skill._id} variants={cardVariants}>
-            <SkillCard
-              title={skill.title}
-              level={skill.level}
-              imageUrl={skill?.file?.url}
-              category={skill.category}
-            />
-          </motion.div>
-        ))}
+       {skills.map((skill) => (
+  <motion.div
+    key={skill._id}
+    variants={cardVariants}
+    className="h-full"
+    whileHover={{ scale: 1.04 }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  >
+    <SkillCard
+      title={skill.title}
+      level={skill.level}
+      imageUrl={skill?.file?.url}
+      category={skill.category}
+    />
+  </motion.div>
+))}
       </motion.div>
     );
   };
@@ -90,7 +97,6 @@ const SkillPage = () => {
 
   return (
     <>
-      {/* 🔹 SEO Head */}
       <Helmet>
         <title>Skills | Mohd Umar - MERN Stack Developer</title>
         <meta
@@ -115,20 +121,31 @@ const SkillPage = () => {
       </Helmet>
 
       <Container>
-        <main>
-          <section className="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+        <main className="w-full">
+          <section className="w-full min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-mono">
             {/* 🔸 Header */}
-            <div className="text-center my-12">
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-2">
-                My <span className="text-orange-500">Skills</span>
+            <div className="max-w-6xl mx-auto mb-14">
+              <div className="flex items-center gap-2 text-pink-500 text-xs uppercase tracking-widest">
+                <span>//</span>
+                <span>Skill_Tree</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl font-extrabold uppercase tracking-tight text-white mt-3">
+                MY{" "}
+                <span className="text-cyan-400 drop-shadow-[0_0_18px_rgba(34,211,238,0.6)]">
+                  SKILLS
+                </span>
               </h1>
-              <p className="text-[#BDC3C7] text-sm sm:text-base">
+
+              <div className="h-[2px] w-28 bg-gradient-to-r from-cyan-400 to-transparent mt-4 mb-4" />
+
+              <p className="text-gray-400 text-sm sm:text-base">
                 Technologies I've worked with and mastered
               </p>
             </div>
 
             {/* 🔹 Skills Grid */}
-            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
               {renderSkills()}
             </div>
           </section>

@@ -137,18 +137,24 @@ const ProjectPage = () => {
                 variants={containerVariants}
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
               >
-                {projects.map((proj) => (
-                  <motion.div key={proj._id} variants={cardVariants} className="h-full">
-                    <ProjectCard
-                      image={proj.imageUrl}
-                      title={proj.title}
-                      description={proj.description}
-                      techStack={proj.techStack}
-                      githubLink={proj.githubLink}
-                      liveDemo={proj.liveDemo}
-                    />
-                  </motion.div>
-                ))}
+             {projects.map((proj) => (
+  <motion.div
+    key={proj._id}
+    variants={cardVariants}
+    className="h-full"
+    whileHover={{ scale: 1.04 }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+  >
+    <ProjectCard
+      image={proj.imageUrl}
+      title={proj.title}
+      description={proj.description}
+      techStack={proj.techStack}
+      githubLink={proj.githubLink}
+      liveDemo={proj.liveDemo}
+    />
+  </motion.div>
+))}
               </motion.div>
             )}
 

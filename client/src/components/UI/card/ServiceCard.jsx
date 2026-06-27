@@ -1,5 +1,5 @@
 import React from "react";
-import { Code } from "lucide-react";
+import { Code, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const ServiceCard = ({ title, category, imageUrl, description }) => {
@@ -12,51 +12,59 @@ const ServiceCard = ({ title, category, imageUrl, description }) => {
   };
 
   return (
-    <div className="bg-[#0F0F0F] rounded-2xl w-full max-w-xs h-[390px] border border-orange-500 shadow-[inset_0_-2px_4px_rgba(255,255,255,0.05),8px_8px_20px_rgba(249,115,22,0.2),-8px_-8px_20px_rgba(255,255,255,0.02)] hover:scale-[1.03] hover:shadow-[inset_0_-2px_4px_rgba(255,255,255,0.05),12px_12px_30px_rgba(249,115,22,0.4),-12px_-12px_30px_rgba(255,255,255,0.05)] transition-transform duration-500 transform flex flex-col justify-between">
-      
-      {/* Card Content */}
-      <div className="flex flex-col items-center p-6 flex-grow">
-        {/* Avatar or Icon */}
+    <div
+      className="relative h-full flex flex-col border border-cyan-500/20 bg-gradient-to-b from-cyan-950/15 to-black hover:border-cyan-400/40 transition-colors duration-300 font-mono"
+      style={{
+        clipPath:
+          "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%)",
+      }}
+    >
+      {/* Top accent line */}
+      <div className="h-[2px] w-full bg-cyan-400/50 shrink-0" />
+
+      {/* Content */}
+      <div className="flex flex-col items-center flex-1 px-6 pt-8 pb-4 text-center">
+        {/* Avatar / Icon */}
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={title}
-            width="200"
-            height="200"
+            width="80"
+            height="80"
             loading="lazy"
             decoding="async"
-            fetchpriority="high"
-            className="w-20 h-20 rounded-full object-cover border-2 border-orange-500 shadow-[0_4px_10px_rgba(249,115,22,0.4)] mb-4"
+            fetchPriority="high"
+            className="w-16 h-16 rounded-full object-cover border-2 border-cyan-500/40 shadow-[0_0_16px_rgba(34,211,238,0.25)] mb-4"
           />
         ) : (
-          <div className="w-20 h-20 flex items-center justify-center rounded-full bg-orange-500 text-white shadow-md mb-4">
-            <Code className="w-10 h-10" />
+          <div className="w-16 h-16 flex items-center justify-center rounded-full border-2 border-cyan-500/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_16px_rgba(34,211,238,0.25)] mb-4">
+            <Code className="w-7 h-7" />
           </div>
         )}
 
+        {/* Category tag */}
+        <span className="text-pink-400 text-[11px] uppercase tracking-widest mb-2">
+          {category || "Service"}
+        </span>
+
         {/* Title */}
-        <h3 className="text-xl font-semibold text-white text-center mb-1">
+        <h3 className="text-lg font-bold text-white mb-2 line-clamp-1">
           {title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-orange-300 text-center mb-3 line-clamp-3 min-h-[60px]">
+        <p className="text-gray-400 text-sm leading-relaxed line-clamp-3 min-h-[3.75rem]">
           {description || "No description provided."}
-        </p>
-
-        {/* Category */}
-        <p className="text-sm text-gray-400 mb-2">
-          <span className="font-semibold text-orange-400">Category:</span>{" "}
-          {category}
         </p>
       </div>
 
       {/* CTA Button */}
       <button
         onClick={handleHireClick}
-        className="w-full bg-orange-500 text-white font-medium py-2 rounded-b-2xl hover:bg-orange-600 transition"
+        className="group w-full flex items-center justify-center gap-2 bg-cyan-400 text-black text-xs font-bold uppercase tracking-widest py-3 hover:bg-cyan-300 transition-colors shrink-0"
       >
-        Hire Me for this Service
+        Hire_Me
+        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
       </button>
     </div>
   );
