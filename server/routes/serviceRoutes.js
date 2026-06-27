@@ -1,7 +1,7 @@
 import express from "express";
 
 const router = express.Router();
-import upload from "../middlewares/multerMiddleware.js";
+// import upload from "../middlewares/multerMiddleware.js";
 import {
   addService,
   getServices,
@@ -12,8 +12,8 @@ import {
 
 router.get('/', getServices)
 router.get('/:id/view', getSingleService)
-router.post('/add',upload.single("file"),  addService)
-router.put('/:id/edit', upload.single("file"), updateService)
+router.post('/add',  addService)
+router.put('/:id/edit',  updateService)
 router.delete('/:id', deleteService)
 
 export default router

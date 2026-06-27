@@ -1,7 +1,7 @@
 import expressAsyncHandler from "express-async-handler";
 import Project from "../models/projectModel.js";
 import { getCache, setCache, delCache } from "../utils/cache.js";
-import { deleteFileFromCloudinary } from "../config/cloudinary.js";
+// import { deleteFileFromCloudinary } from "../config/cloudinary.js";
 
 // @desc   Add a new project
 // @route  POST /api/projects
