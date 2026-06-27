@@ -6,9 +6,10 @@ import expressAsyncHandler from "express-async-handler";
 export const protect = expressAsyncHandler(async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader && authHeader.startsWith("Bearer ")
-    ? authHeader.split(" ")[1]
-    : null;
+    const token =
+      authHeader && authHeader.startsWith("Bearer ")
+        ? authHeader.split(" ")[1]
+        : null;
 
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
@@ -25,10 +26,9 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
     }
 
     req.user = admin; // Attach Admin to request
-    next()
+    next();
   } catch (error) {
     console.error("Token verification error:", error);
     res.status(401).json({ message: "Unauthorized access" });
   }
 });
-

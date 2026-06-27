@@ -7,7 +7,8 @@ import { getCache, setCache, delCache } from "../utils/cache.js";
 // @route  POST /api/projects
 // @access Public or Protected
 export const addProject = expressAsyncHandler(async (req, res) => {
-  const { title, description, techStack, liveDemo, githubLink, imageUrl } = req.body;
+  const { title, description, techStack, liveDemo, githubLink, imageUrl } =
+    req.body;
   // console.log("Body data",req.body)
 
   const project = new Project({
@@ -90,14 +91,14 @@ export const getProjectById = expressAsyncHandler(async (req, res) => {
 // @route  PUT /api/projects/:id
 // @access Public
 export const updateProject = expressAsyncHandler(async (req, res) => {
-  const { title, description, techStack, liveDemo, githubLink, imageUrl } = req.body;
+  const { title, description, techStack, liveDemo, githubLink, imageUrl } =
+    req.body;
 
   const project = await Project.findById(req.params.id);
   if (!project) {
     return res.status(404).json({ message: "Project not found" });
   }
 
- 
   const updatedProject = await Project.findByIdAndUpdate(
     req.params.id,
     {

@@ -19,14 +19,22 @@ export const register = expressAsyncHandler(async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const existingUser = await Auth.findOne({ $or: [{ email }, { username }] }).lean();
+  const existingUser = await Auth.findOne({
+    $or: [{ email }, { username }],
+  }).lean();
   if (existingUser) {
-    return res.status(409).json({ message: "Username or email already exists" });
+    return res
+      .status(409)
+      .json({ message: "Username or email already exists" });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const newAdmin = await Auth.create({ username, email, password: hashedPassword });
+  const newAdmin = await Auth.create({
+    username,
+    email,
+    password: hashedPassword,
+  });
 
   res.status(201).json({
     message: "Admin registered successfully",

@@ -17,7 +17,7 @@ router.get("/", getSkills);
 router.get("/:id/view", getSingleSkill);
 
 // POST add new skill (uses "file" as the form field name for multer)
-router.post("/add",  addSkill);
+router.post("/add", addSkill);
 
 // PUT update skill (uses "file" as the field name to match controller)
 router.put("/:id/edit", updateSkill);

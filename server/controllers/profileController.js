@@ -5,7 +5,6 @@ import axios from "axios";
 import { setCache, getCache, delCache } from "../utils/cache.js";
 // import { deleteFileFromCloudinary } from "../config/cloudinary.js";
 
-
 // @desc Create Profile
 // @route POST /api/profile/add
 // @access Private
@@ -38,7 +37,9 @@ export const addProfile = expressAsyncHandler(async (req, res) => {
   });
 
   await delCache("profile");
-  res.status(201).json({ message: "Profile created successfully", data: newProfile });
+  res
+    .status(201)
+    .json({ message: "Profile created successfully", data: newProfile });
 });
 
 // @desc Get Profile
@@ -109,7 +110,9 @@ export const updateProfile = expressAsyncHandler(async (req, res) => {
   ).lean();
 
   await delCache("profile");
-  res.status(200).json({ message: "Profile updated successfully", data: updatedProfile });
+  res
+    .status(200)
+    .json({ message: "Profile updated successfully", data: updatedProfile });
 });
 
 // @desc Get Avatar
@@ -121,7 +124,8 @@ export const getAvatar = expressAsyncHandler(async (req, res) => {
   if (cached) return res.status(200).json({ from: "cache", avatar: cached });
 
   const profile = await Profile.findOne().lean();
-  if (!profile?.avatar?.url) return res.status(404).json({ message: "Avatar not found" });
+  if (!profile?.avatar?.url)
+    return res.status(404).json({ message: "Avatar not found" });
 
   const avatar = profile.avatar.url;
   await setCache(cacheKey, avatar, 300);
@@ -141,7 +145,10 @@ export const getResume = expressAsyncHandler(async (req, res) => {
     // Redownload from cached URL
     try {
       const fileResponse = await axios.get(cached, { responseType: "stream" });
-      res.setHeader("Content-Disposition", `attachment; filename="${fileName}"`);
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${fileName}"`
+      );
       res.setHeader("Content-Type", "application/pdf");
       return fileResponse.data.pipe(res);
     } catch (err) {
@@ -157,17 +164,15 @@ export const getResume = expressAsyncHandler(async (req, res) => {
 
   const fileUrl = profile.resume.url;
   const fileResponse = await axios.get(fileUrl, { responseType: "stream" });
-  
 
   res.set({
-    'Content-Disposition': 'attachment; filename="resume.pdf"',
-    'Content-Type': 'application/pdf',
+    "Content-Disposition": 'attachment; filename="resume.pdf"',
+    "Content-Type": "application/pdf",
   });
 
   await setCache(cacheKey, fileUrl, 300);
-    return fileResponse.data.pipe(res);
+  return fileResponse.data.pipe(res);
 });
-
 
 // @desc Get Social Links
 // @route GET /api/profile/social-links
@@ -175,10 +180,12 @@ export const getResume = expressAsyncHandler(async (req, res) => {
 export const getSocialLinks = expressAsyncHandler(async (req, res) => {
   const cacheKey = "socialLinks";
   const cached = await getCache(cacheKey);
-  if (cached) return res.status(200).json({ from: "cache", socialLinks: cached });
+  if (cached)
+    return res.status(200).json({ from: "cache", socialLinks: cached });
 
   const profile = await Profile.findOne().lean();
-  if (!profile?.socialLinks) return res.status(404).json({ message: "Social Links not found" });
+  if (!profile?.socialLinks)
+    return res.status(404).json({ message: "Social Links not found" });
 
   await setCache(cacheKey, profile.socialLinks, 300);
   res.status(200).json({ from: "db", socialLinks: profile.socialLinks });

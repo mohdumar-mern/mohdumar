@@ -26,5 +26,5 @@ const authSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Auth = mongoose.model("Auth", authSchema)
-export default Auth
+const Auth = mongoose.model("Auth", authSchema);
+export default Auth;

@@ -9,7 +9,9 @@ export const addService = expressAsyncHandler(async (req, res) => {
   const { title, description, category, status = "active" } = req.body;
 
   if (!req.file) {
-    return res.status(400).json({ success: false, error: "No service image uploaded" });
+    return res
+      .status(400)
+      .json({ success: false, error: "No service image uploaded" });
   }
 
   const fileUrl = req.file.path || req.file.url;
@@ -24,7 +26,8 @@ export const addService = expressAsyncHandler(async (req, res) => {
   });
 
   const savedService = await service.save();
-  if (!savedService) return res.status(500).json({ message: "Failed to save service" });
+  if (!savedService)
+    return res.status(500).json({ message: "Failed to save service" });
 
   await delCache("allServices");
   res.status(201).json({ data: savedService });
@@ -39,12 +42,12 @@ export const getServices = expressAsyncHandler(async (req, res) => {
   if (cached) return res.status(200).json({ from: "cache", data: cached });
 
   const services = await Service.find().lean();
-  if (!services?.length) return res.status(404).json({ message: "Services not found" });
+  if (!services?.length)
+    return res.status(404).json({ message: "Services not found" });
 
   await setCache(cacheKey, services, 300);
   res.status(200).json({ from: "db", data: services });
 });
-
 
 // @desc   Get Single Service by ID
 // @route  GET /api/services/:id/view
@@ -89,7 +92,8 @@ export const updateService = expressAsyncHandler(async (req, res) => {
     { new: true, runValidators: true }
   ).lean();
 
-  if (!updatedService) return res.status(400).json({ message: "Failed to update service" });
+  if (!updatedService)
+    return res.status(400).json({ message: "Failed to update service" });
 
   await delCache("allServices");
   await delCache(`service:${req.params.id}`);
