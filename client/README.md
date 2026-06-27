@@ -8,6 +8,7 @@ Built using **React.js**, **Redux Toolkit**, **React Router DOM**, and styled wi
 
 ---
 
+
 ## 🚀 Features
 
 - 📄 **Profile Management** – Add and update name, avatar, resume, and social links.
