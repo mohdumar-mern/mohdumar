@@ -7,6 +7,7 @@ import {
   LayoutDashboard,
   Contact,
   Briefcase,
+  BookOpen,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -18,6 +19,7 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const tabs = [
     { label: "Dashboard", icon: LayoutDashboard, path: "" },
     { label: "Projects", icon: Code2, path: "projects" },
@@ -25,6 +27,7 @@ const Sidebar = () => {
     { label: "Services", icon: Briefcase, path: "services" },
     { label: "Contacts", icon: Contact, path: "contacts" },
     { label: "Profile", icon: User, path: "profile" },
+    { label: "Blogs", icon: BookOpen, path: "blogs" },  // ← yeh add karo
   ];
 
   const logoutHandler = () => {

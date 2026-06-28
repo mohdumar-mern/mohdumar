@@ -9,6 +9,8 @@ const AboutPage = lazy(() => import("./pages/AboutPage/AboutPage"));
 const ProjectPage = lazy(() => import("./pages/projects/ProjectPage"));
 const SkillPage = lazy(() => import("./pages/Skills/SkillPage"));
 const ServicesPage = lazy(() => import("./pages/Services/ServicesPage"));
+const BlogPage = lazy(() => import("./pages/Blog/BlogPage"));
+const BlogDetail = lazy(() => import("./pages/Blog/BlogDetail"));
 const ContactPage = lazy(() => import("./pages/Contact/ContatPage"));
 const LoginPage = lazy(() => import("./pages/Login/LoginPage"));
 
@@ -51,6 +53,14 @@ const ContactList = lazy(() =>
 const ContactDetail = lazy(() =>
   import("./private/Dashboard/contact/ContactDetail")
 );
+
+
+const BlogList = lazy(() =>
+  import("./private/Dashboard/Blog/BlogList")
+);
+const AddAndUpdateBlog = lazy(() =>
+  import("./private/Dashboard/Blog/AddAndUpdateBlog")
+);
 const ProfileDetail = lazy(() =>
   import("./private/Dashboard/Profile/ProfileDetail")
 );
@@ -60,8 +70,8 @@ const UpdateProfile = lazy(() =>
 
 const App = () => (
   <Router>
-    <LayoutComponents>
       <Toaster position="top-right" reverseOrder={false} />
+    <LayoutComponents>
       <Suspense
         fallback={
           <div className="flex justify-center items-center h-screen">
@@ -75,6 +85,8 @@ const App = () => (
           <Route path="/projects" element={<ProjectPage />} />
           <Route path="/skills" element={<SkillPage />} />
           <Route path="/services" element={<ServicesPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
           <Route path="/contact-us" element={<ContactPage />} />
           <Route path="/login" element={<LoginPage />} />
 
@@ -104,6 +116,10 @@ const App = () => (
 
             <Route path="contacts" element={<ContactList />} />
             <Route path="contacts/:id/view" element={<ContactDetail />} />
+
+            <Route path="blogs" element={<BlogList />} />
+<Route path="blogs/add" element={<AddAndUpdateBlog />} />
+<Route path="blogs/:id/edit" element={<AddAndUpdateBlog />} />
 
             <Route path="profile" element={<ProfileDetail />} />
             <Route path="profile/:id/edit" element={<UpdateProfile />} />

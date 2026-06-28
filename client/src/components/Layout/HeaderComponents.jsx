@@ -9,6 +9,7 @@ export const navItems = [
   { label: "Projects", path: "/projects" },
   { label: "Skills", path: "/skills" },
   { label: "Services", path: "/services" },
+  { label: "Blog", path: "/blog" },        // ← yeh add karo
   { label: "Contact Us", path: "/contact-us" },
 ];
 
