@@ -1,1 +1,95 @@
-@import "tailwindcss";
+
+
+
+  @import "tailwindcss";
+
+/* Rich text content styles — shared by the TipTap editor (.ProseMirror)
+   AND the public blog renderer (.rich-content) */
+.ProseMirror,
+.rich-content {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before,
+.rich-content p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #4b5563;
+  pointer-events: none;
+  height: 0;
+}
+
+.ProseMirror h1,
+.rich-content h1 {
+  @apply text-3xl font-bold text-white mt-6 mb-3;
+}
+
+.ProseMirror h2,
+.rich-content h2 {
+  @apply text-2xl font-bold text-white mt-5 mb-2;
+}
+
+.ProseMirror h3,
+.rich-content h3 {
+  @apply text-xl font-bold text-cyan-400 mt-4 mb-2;
+}
+
+.ProseMirror p,
+.rich-content p {
+  @apply text-gray-300 leading-relaxed mb-3;
+}
+
+.ProseMirror ul,
+.rich-content ul {
+  @apply list-disc list-outside text-gray-300 mb-3 pl-6;
+}
+
+.ProseMirror ol,
+.rich-content ol {
+  @apply list-decimal list-outside text-gray-300 mb-3 pl-6;
+}
+
+/* Fix: TipTap wraps list item text in <p>, which is block-level
+   and drops to its own line below the bullet. Force it inline,
+   and kill the extra margin that <p> brings inside list items. */
+.ProseMirror li,
+.rich-content li {
+  @apply pl-1;
+  margin: 0;
+}
+
+.ProseMirror li > p,
+.rich-content li > p {
+  display: inline;
+  margin: 0;
+}
+
+.ProseMirror code,
+.rich-content code {
+  @apply bg-gray-800 text-pink-400 px-1 py-0.5 rounded text-sm font-mono;
+}
+
+.ProseMirror pre,
+.rich-content pre {
+  @apply bg-gray-900 border border-cyan-500/20 rounded p-4 mb-3 overflow-x-auto;
+}
+
+.ProseMirror pre code,
+.rich-content pre code {
+  @apply bg-transparent text-cyan-300 p-0;
+}
+
+.ProseMirror blockquote,
+.rich-content blockquote {
+  @apply border-l-4 border-cyan-400 pl-4 text-gray-400 italic mb-3;
+}
+
+.ProseMirror hr,
+.rich-content hr {
+  @apply border-cyan-500/20 my-6;
+}
+
+.ProseMirror a,
+.rich-content a {
+  @apply text-cyan-400 underline;
+}

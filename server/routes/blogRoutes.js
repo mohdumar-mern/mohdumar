@@ -43,6 +43,7 @@ router.get("/:slug", getBlogBySlug);
 // Protected Routes
 router.post("/", protect, blogValidation, createBlog);
 router.get("/admin/all", protect, getAdminBlogs);
+
 router.put("/:id", protect, blogValidation, updateBlog);
 router.delete("/:id", protect, deleteBlog);
 
