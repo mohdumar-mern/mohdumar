@@ -9,7 +9,16 @@ export const createBlog = expressAsyncHandler(async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { title, content, excerpt, tags, metaTitle, metaDescription, coverImage, isPublished } = req.body;
+  const {
+    title,
+    content,
+    excerpt,
+    tags,
+    metaTitle,
+    metaDescription,
+    coverImage,
+    isPublished,
+  } = req.body;
 
   const blog = new Blog({
     title,
@@ -43,7 +52,8 @@ export const getBlogs = expressAsyncHandler(async (req, res) => {
     page: parseInt(page),
     limit: parseInt(limit),
     sort: { publishedAt: -1 },
-    select: "title slug excerpt tags coverImage readingTime views publishedAt createdAt",
+    select:
+      "title slug excerpt tags coverImage readingTime views publishedAt createdAt",
   };
 
   const blogs = await Blog.find(query)

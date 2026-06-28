@@ -8,7 +8,7 @@ import projectRoutes from "./projectRoutes.js";
 import serviceRoutes from "./serviceRoutes.js";
 import skillRoutes from "./skillRoutes.js";
 import profileRoutes from "./profileRoutes.js";
-import blogRoutes from './blogRoutes.js'
+import blogRoutes from "./blogRoutes.js";
 
 router.use("/auth", authRoutes);
 router.use("/contacts", contactRoutes);

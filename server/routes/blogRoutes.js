@@ -22,10 +22,7 @@ const blogValidation = [
     .isLength({ max: 200 })
     .withMessage("Title cannot exceed 200 characters"),
 
-  body("content")
-    .trim()
-    .notEmpty()
-    .withMessage("Content is required"),
+  body("content").trim().notEmpty().withMessage("Content is required"),
 
   body("metaTitle")
     .optional()
