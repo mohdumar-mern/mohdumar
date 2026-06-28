@@ -41,6 +41,7 @@
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^9.0.1",
+    "slugify": "^1.6.9",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

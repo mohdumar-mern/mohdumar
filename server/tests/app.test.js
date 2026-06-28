@@ -41,6 +41,10 @@ describe("API Health Tests", () => {
     const res = await request(app).get("/api/profile");
     expect(res.statusCode).toBe(200);
   }, 15000);
+  test("GET /api/blogs should return 200", async () => {
+    const res = await request(app).get("/api/blogs");
+    expect(res.statusCode).toBe(200);
+  }, 15000);
 
   test("GET /api/unknown should return 404", async () => {
     const res = await request(app).get("/api/unknown");
