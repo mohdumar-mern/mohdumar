@@ -93,7 +93,6 @@ export const getBlogBySlug = expressAsyncHandler(async (req, res) => {
 // ✅ Get All Blogs for Admin (Protected)
 export const getAdminBlogs = expressAsyncHandler(async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
-  
 
   const blogs = await Blog.find()
     .sort({ createdAt: -1 })

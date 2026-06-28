@@ -22,7 +22,7 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL, // ✅ Sirf tera frontend
-    credentials: true
+    credentials: true,
   })
 );
 app.use(express.json());

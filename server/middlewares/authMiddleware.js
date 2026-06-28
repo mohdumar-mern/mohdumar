@@ -16,7 +16,7 @@ export const protect = expressAsyncHandler(async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("decode", decoded)
+    console.log("decode", decoded);
     if (!decoded?.id) {
       return res.status(401).json({ message: "Invalid token" });
     }
