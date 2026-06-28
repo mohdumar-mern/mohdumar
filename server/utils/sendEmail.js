@@ -13,17 +13,16 @@ const sendEmail = async (subject, text, replyTo) => {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: replyTo,
-      replyTo,
+      to: process.env.EMAIL_USER, // ← khud ko email aayegi
+      replyTo: replyTo,           // ← visitor ka email reply ke liye
       subject,
       text,
     };
 
     await transporter.sendMail(mailOptions);
   } catch (error) {
-    // Don't use res here – just throw to be handled where called
     console.error("❌ Email sending failed:", error.message);
-    throw new Error("Email sending failed: " + error.message);
+    throw new Error("Email sending failed: " + error.message, { cause: error });
   }
 };
 
