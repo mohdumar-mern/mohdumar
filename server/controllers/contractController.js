@@ -6,7 +6,6 @@ import { generateContractPdf } from "../services/contractPdfService.js";
 import { generateContractNumber } from "../services/contractNumberService.js";
 import Lead from "../models/Lead.js";
 
-
 const CONTRACT_STATUSES = ["draft", "sent", "signed", "cancelled"];
 
 const EDITABLE_FIELDS = [
@@ -22,9 +21,8 @@ const EDITABLE_FIELDS = [
   "endDate",
   "clauses",
   "status",
-  "leadId"
+  "leadId",
 ];
-
 
 const getVerifiedLead = async (leadId) => {
   if (!mongoose.isValidObjectId(leadId)) {
@@ -290,7 +288,7 @@ const buildContractPayload = (body, { isCreate = false } = {}) => {
           ) {
             throw createError("Invalid lead ID.");
           }
-        
+
           payload.leadId = body.leadId || null;
         }
         break;
@@ -431,17 +429,15 @@ export const getContractById = asyncHandler(async (req, res) => {
 export const createContract = asyncHandler(async (req, res) => {
   const leadId = req.body.leadId || null;
 
-if (leadId) {
-  await getVerifiedLead(leadId);
-}
+  if (leadId) {
+    await getVerifiedLead(leadId);
+  }
 
-const payload = buildContractPayload(req.body, {
-  isCreate: true,
-});
+  const payload = buildContractPayload(req.body, {
+    isCreate: true,
+  });
 
-payload.leadId = leadId;
-
-
+  payload.leadId = leadId;
 
   const contract = new Contract({
     ...payload,

@@ -1,4 +1,3 @@
-
 import puppeteer from "puppeteer";
 import sanitizeHtml from "sanitize-html";
 
@@ -45,9 +44,21 @@ const formatMoney = (amount, currency = "USD") => {
 const cleanRichText = (html = "") =>
   sanitizeHtml(String(html), {
     allowedTags: [
-      "p", "br", "strong", "b", "em", "i", "u",
-      "ul", "ol", "li", "h2", "h3", "h4",
-      "blockquote", "a",
+      "p",
+      "br",
+      "strong",
+      "b",
+      "em",
+      "i",
+      "u",
+      "ul",
+      "ol",
+      "li",
+      "h2",
+      "h3",
+      "h4",
+      "blockquote",
+      "a",
     ],
     allowedAttributes: {
       a: ["href", "title"],
@@ -94,9 +105,7 @@ const buildContractHtml = (contract) => {
   const contractNumber = escapeHtml(contract.contractNumber || "Not assigned");
   const clientName = escapeHtml(contract.clientName || "Not specified");
   const clientEmail = escapeHtml(contract.clientEmail || "Not specified");
-  const freelancerName = escapeHtml(
-    contract.freelancerName || "Not specified"
-  );
+  const freelancerName = escapeHtml(contract.freelancerName || "Not specified");
   const currency = contract.currency || "USD";
 
   const fee = formatMoney(contract.paymentAmount, currency);

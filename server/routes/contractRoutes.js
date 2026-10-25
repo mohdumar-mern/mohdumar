@@ -24,7 +24,7 @@ router
   .get(getContractById)
   .patch(updateContract)
   .delete(deleteContract);
-  router.get("/:id/versions", getContractVersions);
+router.get("/:id/versions", getContractVersions);
 router
   .route("/:id/pdf")
   .get(downloadContractPdf)
