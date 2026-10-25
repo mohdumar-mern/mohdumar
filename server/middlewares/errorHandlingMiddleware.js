@@ -1,4 +1,3 @@
-
 export const errorHandling = (err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
@@ -34,10 +33,7 @@ export const errorHandling = (err, req, res, next) => {
       method: req.method,
       path: req.originalUrl,
       message: err.message,
-      stack:
-        process.env.NODE_ENV === "development"
-          ? err.stack
-          : undefined,
+      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
     });
 
     message =
@@ -49,8 +45,7 @@ export const errorHandling = (err, req, res, next) => {
   return res.status(statusCode).json({
     success: false,
     message,
-    ...(process.env.NODE_ENV === "development" &&
-    statusCode >= 500
+    ...(process.env.NODE_ENV === "development" && statusCode >= 500
       ? { stack: err.stack }
       : {}),
   });

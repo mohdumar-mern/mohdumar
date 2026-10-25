@@ -1,4 +1,3 @@
-
 import jwt from "jsonwebtoken";
 import Admin from "../models/authModel.js";
 import expressAsyncHandler from "express-async-handler";

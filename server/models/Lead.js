@@ -1,12 +1,6 @@
 import mongoose from "mongoose";
 
-const CONTACT_METHODS = [
-  "Phone",
-  "WhatsApp",
-  "Email",
-  "In Person",
-  "Other",
-];
+const CONTACT_METHODS = ["Phone", "WhatsApp", "Email", "In Person", "Other"];
 
 const LEAD_STATUSES = [
   "New",

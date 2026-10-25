@@ -1,12 +1,8 @@
-
 import mongoose from "mongoose";
 import Lead from "../models/Lead.js";
 import generateLeadId from "../utils/generateLeadId.js";
 import asyncHandler from "../utils/asyncHandler.js";
-import {
-  getPagination,
-  getPaginationMeta,
-} from "../utils/pagination.js";
+import { getPagination, getPaginationMeta } from "../utils/pagination.js";
 
 const LEAD_STATUSES = [
   "New",
@@ -46,13 +42,7 @@ const LEAD_SOURCES = [
   "Other",
 ];
 
-const CONTACT_METHODS = [
-  "Phone",
-  "WhatsApp",
-  "Email",
-  "In Person",
-  "Other",
-];
+const CONTACT_METHODS = ["Phone", "WhatsApp", "Email", "In Person", "Other"];
 
 const CONTACT_OUTCOMES = [
   "No Answer",
@@ -117,10 +107,7 @@ const validateEnum = (value, allowedValues, fieldName) => {
     return value;
   }
 
-  if (
-    typeof value !== "string" ||
-    !allowedValues.includes(value)
-  ) {
+  if (typeof value !== "string" || !allowedValues.includes(value)) {
     throw createError(`Invalid ${fieldName} value.`);
   }
 
@@ -147,9 +134,7 @@ const validateOptionalUrl = (value, fieldName) => {
 
     return parsed.toString();
   } catch {
-    throw createError(
-      `${fieldName} must be a valid HTTP or HTTPS URL.`
-    );
+    throw createError(`${fieldName} must be a valid HTTP or HTTPS URL.`);
   }
 };
 
@@ -173,9 +158,7 @@ const validateBudget = (value) => {
   const budget = Number(value);
 
   if (!Number.isFinite(budget) || budget < 0) {
-    throw createError(
-      "Potential budget must be a non-negative number."
-    );
+    throw createError("Potential budget must be a non-negative number.");
   }
 
   return budget;
@@ -191,9 +174,7 @@ const rejectUnknownFields = (body, allowedFields) => {
   );
 
   if (unknownFields.length > 0) {
-    throw createError(
-      `Unsupported field(s): ${unknownFields.join(", ")}.`
-    );
+    throw createError(`Unsupported field(s): ${unknownFields.join(", ")}.`);
   }
 };
 
@@ -209,11 +190,7 @@ const buildLeadPayload = (body, { isCreate = false } = {}) => {
 
     switch (field) {
       case "category":
-        payload.category = validateEnum(
-          value,
-          LEAD_CATEGORIES,
-          "category"
-        );
+        payload.category = validateEnum(value, LEAD_CATEGORIES, "category");
         break;
 
       case "websiteStatus":
@@ -225,19 +202,11 @@ const buildLeadPayload = (body, { isCreate = false } = {}) => {
         break;
 
       case "source":
-        payload.source = validateEnum(
-          value,
-          LEAD_SOURCES,
-          "source"
-        );
+        payload.source = validateEnum(value, LEAD_SOURCES, "source");
         break;
 
       case "status":
-        payload.status = validateEnum(
-          value,
-          LEAD_STATUSES,
-          "lead status"
-        );
+        payload.status = validateEnum(value, LEAD_STATUSES, "lead status");
         break;
 
       case "bestContactMethod":
@@ -286,10 +255,7 @@ const buildLeadPayload = (body, { isCreate = false } = {}) => {
     }
   }
 
-  if (
-    isCreate &&
-    (!payload.businessName || !payload.businessName.trim())
-  ) {
+  if (isCreate && (!payload.businessName || !payload.businessName.trim())) {
     throw createError("Business name is required.");
   }
 
@@ -300,10 +266,7 @@ const validateCategoryCombination = (category, customCategory) => {
   if (!category) return;
 
   if (category === "Other") {
-    if (
-      typeof customCategory !== "string" ||
-      !customCategory.trim()
-    ) {
+    if (typeof customCategory !== "string" || !customCategory.trim()) {
       throw createError(
         "Please enter a custom category when category is Other."
       );
@@ -311,8 +274,7 @@ const validateCategoryCombination = (category, customCategory) => {
   }
 };
 
-const escapeRegex = (value) =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const validateObjectId = (id) => {
   if (!mongoose.isValidObjectId(id)) {
@@ -339,14 +301,8 @@ const findLeadOrThrow = async (id) => {
 export const getLeads = asyncHandler(async (req, res) => {
   const { page, limit, skip } = getPagination(req.query);
 
-  const {
-    search,
-    status,
-    category,
-    websiteStatus,
-    source,
-    followUp,
-  } = req.query;
+  const { search, status, category, websiteStatus, source, followUp } =
+    req.query;
 
   const filter = {};
 
@@ -377,19 +333,11 @@ export const getLeads = asyncHandler(async (req, res) => {
   }
 
   if (status !== undefined) {
-    filter.status = validateEnum(
-      status,
-      LEAD_STATUSES,
-      "lead status"
-    );
+    filter.status = validateEnum(status, LEAD_STATUSES, "lead status");
   }
 
   if (category !== undefined) {
-    filter.category = validateEnum(
-      category,
-      LEAD_CATEGORIES,
-      "category"
-    );
+    filter.category = validateEnum(category, LEAD_CATEGORIES, "category");
   }
 
   if (websiteStatus !== undefined) {
@@ -401,18 +349,12 @@ export const getLeads = asyncHandler(async (req, res) => {
   }
 
   if (source !== undefined) {
-    filter.source = validateEnum(
-      source,
-      LEAD_SOURCES,
-      "source"
-    );
+    filter.source = validateEnum(source, LEAD_SOURCES, "source");
   }
 
   if (followUp !== undefined) {
     if (!["upcoming", "overdue", "none"].includes(followUp)) {
-      throw createError(
-        "Follow-up filter must be upcoming, overdue, or none."
-      );
+      throw createError("Follow-up filter must be upcoming, overdue, or none.");
     }
 
     const now = new Date();
@@ -470,10 +412,7 @@ export const getLeadById = asyncHandler(async (req, res) => {
 export const createLead = asyncHandler(async (req, res) => {
   const payload = buildLeadPayload(req.body, { isCreate: true });
 
-  validateCategoryCombination(
-    payload.category,
-    payload.customCategory
-  );
+  validateCategoryCombination(payload.category, payload.customCategory);
 
   const leadId = await generateLeadId();
 
@@ -501,24 +440,16 @@ export const updateLead = asyncHandler(async (req, res) => {
     throw createError("Provide at least one field to update.");
   }
 
-  const effectiveCategory =
-    payload.category ?? lead.category;
+  const effectiveCategory = payload.category ?? lead.category;
 
-  const effectiveCustomCategory =
-    Object.hasOwn(payload, "customCategory")
-      ? payload.customCategory
-      : lead.customCategory;
+  const effectiveCustomCategory = Object.hasOwn(payload, "customCategory")
+    ? payload.customCategory
+    : lead.customCategory;
 
-  validateCategoryCombination(
-    effectiveCategory,
-    effectiveCustomCategory
-  );
+  validateCategoryCombination(effectiveCategory, effectiveCustomCategory);
 
   // If category changes away from Other, remove its custom value.
-  if (
-    Object.hasOwn(payload, "category") &&
-    payload.category !== "Other"
-  ) {
+  if (Object.hasOwn(payload, "category") && payload.category !== "Other") {
     payload.customCategory = "";
   }
 
@@ -556,85 +487,72 @@ export const deleteLead = asyncHandler(async (req, res) => {
  * POST /api/leads/:id/contact-history
  * Append a contact attempt to the lead's history.
  */
-export const addContactHistory = asyncHandler(
-  async (req, res) => {
-    const lead = await findLeadOrThrow(req.params.id);
+export const addContactHistory = asyncHandler(async (req, res) => {
+  const lead = await findLeadOrThrow(req.params.id);
 
-    rejectUnknownFields(req.body, CONTACT_HISTORY_FIELDS);
+  rejectUnknownFields(req.body, CONTACT_HISTORY_FIELDS);
 
-    const { method, contactedAt, outcome, notes, nextFollowUpAt } =
-      req.body;
+  const { method, contactedAt, outcome, notes, nextFollowUpAt } = req.body;
 
-    if (!method || !outcome) {
-      throw createError(
-        "Contact method and outcome are required."
-      );
-    }
-
-    const validatedMethod = validateEnum(
-      method,
-      CONTACT_METHODS,
-      "contact method"
-    );
-
-    const validatedOutcome = validateEnum(
-      outcome,
-      CONTACT_OUTCOMES,
-      "contact outcome"
-    );
-
-    let validatedNotes = "";
-
-    if (notes !== undefined && notes !== null) {
-      validatedNotes = normalizeString(notes);
-    }
-
-    const contactDate =
-      validateOptionalDate(contactedAt, "Contact date") ||
-      new Date();
-
-    const followUpDate = validateOptionalDate(
-      nextFollowUpAt,
-      "Next follow-up date"
-    );
-
-    const historyEntry = {
-      method: validatedMethod,
-      contactedAt: contactDate,
-      outcome: validatedOutcome,
-      notes: validatedNotes,
-      ...(followUpDate !== undefined
-        ? { nextFollowUpAt: followUpDate }
-        : {}),
-    };
-
-    lead.contactHistory.push(historyEntry);
-
-    // Keep lead status and next follow-up in sync where appropriate.
-    if (
-      validatedOutcome === "Interested" &&
-      lead.status === "New"
-    ) {
-      lead.status = "Interested";
-    } else if (
-      ["Connected", "No Answer", "Call Back"].includes(
-        validatedOutcome
-      ) &&
-      lead.status === "New"
-    ) {
-      lead.status = "Contacted";
-    }
-
-    if (followUpDate !== undefined) {
-      lead.nextFollowUpAt = followUpDate;
-    }
-
-    await lead.save();
-
-    res.status(201).json({
-      success: true,
-      message: "Contact history added successfully.",
-      data: { lead },
-    });
+  if (!method || !outcome) {
+    throw createError("Contact method and outcome are required.");
   }
-);
+
+  const validatedMethod = validateEnum(
+    method,
+    CONTACT_METHODS,
+    "contact method"
+  );
+
+  const validatedOutcome = validateEnum(
+    outcome,
+    CONTACT_OUTCOMES,
+    "contact outcome"
+  );
+
+  let validatedNotes = "";
+
+  if (notes !== undefined && notes !== null) {
+    validatedNotes = normalizeString(notes);
+  }
+
+  const contactDate =
+    validateOptionalDate(contactedAt, "Contact date") || new Date();
+
+  const followUpDate = validateOptionalDate(
+    nextFollowUpAt,
+    "Next follow-up date"
+  );
+
+  const historyEntry = {
+    method: validatedMethod,
+    contactedAt: contactDate,
+    outcome: validatedOutcome,
+    notes: validatedNotes,
+    ...(followUpDate !== undefined ? { nextFollowUpAt: followUpDate } : {}),
+  };
+
+  lead.contactHistory.push(historyEntry);
+
+  // Keep lead status and next follow-up in sync where appropriate.
+  if (validatedOutcome === "Interested" && lead.status === "New") {
+    lead.status = "Interested";
+  } else if (
+    ["Connected", "No Answer", "Call Back"].includes(validatedOutcome) &&
+    lead.status === "New"
+  ) {
+    lead.status = "Contacted";
+  }
+
+  if (followUpDate !== undefined) {
+    lead.nextFollowUpAt = followUpDate;
+  }
+
+  await lead.save();
+
+  res.status(201).json({
+    success: true,
+    message: "Contact history added successfully.",
+    data: { lead },
+  });
+});

@@ -1,4 +1,3 @@
-
 import Counter from "../models/Counter.js";
 
 const generateLeadId = async () => {
