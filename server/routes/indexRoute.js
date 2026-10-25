@@ -9,6 +9,7 @@ import serviceRoutes from "./serviceRoutes.js";
 import skillRoutes from "./skillRoutes.js";
 import profileRoutes from "./profileRoutes.js";
 import blogRoutes from "./blogRoutes.js";
+import leadRoutes from "./leadRoutes.js"
 
 router.use("/auth", authRoutes);
 router.use("/contacts", contactRoutes);
@@ -17,5 +18,6 @@ router.use("/services", serviceRoutes);
 router.use("/skills", skillRoutes);
 router.use("/profile", profileRoutes);
 router.use("/blogs", blogRoutes);
+router.use("/leads", leadRoutes);
 
 export default router;
