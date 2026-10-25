@@ -24,11 +24,11 @@ router
   .get(getContractById)
   .patch(updateContract)
   .delete(deleteContract);
-
+router.get("/:id/versions", getContractVersions);
 router
   .route("/:id/pdf")
   .get(downloadContractPdf)
-  .get(getContractVersions)
+  // .get(getContractVersions)
   .patch(updateContractStatus);
 
 export default router;

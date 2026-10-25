@@ -4,6 +4,7 @@ import Contract from "../models/contractModel.js";
 import { getPagination, getPaginationMeta } from "../utils/pagination.js";
 import { generateContractPdf } from "../services/contractPdfService.js";
 import { generateContractNumber } from "../services/contractNumberService.js";
+import Lead from "../models/Lead.js";
 
 const CONTRACT_STATUSES = ["draft", "sent", "signed", "cancelled"];
 
@@ -20,8 +21,26 @@ const EDITABLE_FIELDS = [
   "endDate",
   "clauses",
   "status",
+  "leadId",
 ];
 
+const getVerifiedLead = async (leadId) => {
+  if (!mongoose.isValidObjectId(leadId)) {
+    const error = new Error("Invalid lead ID.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const lead = await Lead.findById(leadId);
+
+  if (!lead) {
+    const error = new Error("Lead not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return lead;
+};
 const createError = (message, statusCode = 400) => {
   const error = new Error(message);
   error.statusCode = statusCode;
@@ -74,6 +93,52 @@ const validateDate = (value, fieldName) => {
   return date;
 };
 
+// const validateClauses = (clauses) => {
+//   if (!Array.isArray(clauses)) {
+//     throw createError("Clauses must be an array.");
+//   }
+
+//   if (clauses.length > 100) {
+//     throw createError("A contract cannot contain more than 100 clauses.");
+//   }
+
+//   return clauses.map((clause) => {
+//     if (!isPlainObject(clause)) {
+//       throw createError("Each clause must be an object.");
+//     }
+
+//     const allowedClauseFields = ["_id", "id", "title", "content"];
+
+//     rejectUnknownFields(clause, allowedClauseFields);
+
+//     const title = normalizeString(clause.title, "Clause title", 200);
+
+//     if (!title) {
+//       throw createError("Clause title is required.");
+//     }
+
+//     const content =
+//       clause.content === undefined
+//         ? ""
+//         : normalizeString(clause.content, "Clause content", 50000);
+
+//     const result = { title, content };
+
+//     // Preserve existing clause IDs when editing or reordering.
+//     const clauseId = clause._id ?? clause.id;
+
+//     if (clauseId !== undefined) {
+//       if (!mongoose.isValidObjectId(clauseId)) {
+//         throw createError("Invalid clause ID.");
+//       }
+
+//       result._id = clauseId;
+//     }
+
+//     return result;
+//   });
+// };
+
 const validateClauses = (clauses) => {
   if (!Array.isArray(clauses)) {
     throw createError("Clauses must be an array.");
@@ -89,7 +154,6 @@ const validateClauses = (clauses) => {
     }
 
     const allowedClauseFields = ["_id", "id", "title", "content"];
-
     rejectUnknownFields(clause, allowedClauseFields);
 
     const title = normalizeString(clause.title, "Clause title", 200);
@@ -105,16 +169,20 @@ const validateClauses = (clauses) => {
 
     const result = { title, content };
 
-    // Preserve existing clause IDs when editing or reordering.
-    const clauseId = clause._id ?? clause.id;
+    // Prefer MongoDB _id when editing an existing clause.
+    const existingId = clause._id;
 
-    if (clauseId !== undefined) {
-      if (!mongoose.isValidObjectId(clauseId)) {
+    if (existingId !== undefined && existingId !== null && existingId !== "") {
+      if (!mongoose.isValidObjectId(existingId)) {
         throw createError("Invalid clause ID.");
       }
 
-      result._id = clauseId;
+      result._id = existingId;
     }
+
+    // `id` from the frontend may be a UUID.
+    // Do not convert it to MongoDB `_id`.
+    // Mongoose will generate a subdocument `_id` for new clauses.
 
     return result;
   });
@@ -210,6 +278,19 @@ const buildContractPayload = (body, { isCreate = false } = {}) => {
         }
 
         payload.status = value;
+        break;
+      case "leadId":
+        if (body.leadId !== undefined) {
+          if (
+            body.leadId !== null &&
+            body.leadId !== "" &&
+            !mongoose.isValidObjectId(body.leadId)
+          ) {
+            throw createError("Invalid lead ID.");
+          }
+
+          payload.leadId = body.leadId || null;
+        }
         break;
 
       default:
@@ -346,7 +427,17 @@ export const getContractById = asyncHandler(async (req, res) => {
 
 // POST /api/contracts
 export const createContract = asyncHandler(async (req, res) => {
-  const payload = buildContractPayload(req.body, { isCreate: true });
+  const leadId = req.body.leadId || null;
+
+  if (leadId) {
+    await getVerifiedLead(leadId);
+  }
+
+  const payload = buildContractPayload(req.body, {
+    isCreate: true,
+  });
+
+  payload.leadId = leadId;
 
   const contract = new Contract({
     ...payload,

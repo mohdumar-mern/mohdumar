@@ -126,6 +126,12 @@ const contractSchema = new mongoose.Schema(
       ref: "Auth",
       default: null,
     },
+    leadId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lead",
+      default: null,
+      index: true,
+    },
     signedAt: {
       type: Date,
       default: null,

@@ -1,0 +1,218 @@
+
+.contracts-dashboard {
+    min-height: 100vh;
+    padding: 28px;
+    color: #e5edf5;
+    background: #030708;
+    font-family: inherit;
+  }
+  
+  .contracts-dashboard * {
+    box-sizing: border-box;
+  }
+  
+  .contracts-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  
+  .contracts-header h1 {
+    margin: 0 0 8px;
+    color: #f8fafc;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  
+  .contracts-header p {
+    margin: 0;
+    color: #94a3b8;
+  }
+  
+  .contracts-dashboard button {
+    padding: 10px 15px;
+    color: #00e5ff;
+    background: #061619;
+    border: 1px solid #087987;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  
+  .contracts-dashboard button:hover {
+    background: #0a282d;
+    border-color: #00e5ff;
+  }
+  
+  .contracts-dashboard button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .contracts-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .contracts-toolbar input,
+  .contracts-toolbar select {
+    min-height: 44px;
+    padding: 10px 14px;
+    color: #e5edf5;
+    background: #070d10;
+    border: 1px solid #16343b;
+    border-radius: 7px;
+    outline: none;
+  }
+  
+  .contracts-toolbar input {
+    width: min(420px, 100%);
+  }
+  
+  .contracts-toolbar select {
+    min-width: 160px;
+  }
+  
+  .contracts-toolbar input:focus,
+  .contracts-toolbar select:focus {
+    border-color: #00d9f5;
+  }
+  
+  .contracts-empty {
+    padding: 48px 24px;
+    text-align: center;
+    background: #050b0d;
+    border: 1px solid #123139;
+    border-radius: 12px;
+  }
+  
+  .contracts-empty h2 {
+    margin: 0 0 10px;
+    color: #f8fafc;
+    font-size: 21px;
+  }
+  
+  .contracts-empty p {
+    margin-bottom: 22px;
+    color: #94a3b8;
+  }
+  
+  .contracts-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #123139;
+    border-radius: 10px;
+  }
+  
+  .contracts-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .contracts-table th,
+  .contracts-table td {
+    padding: 15px;
+    border-bottom: 1px solid #14272c;
+    white-space: nowrap;
+  }
+  
+  .contracts-table th {
+    color: #8da5b5;
+    background: #071114;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .contracts-table td {
+    color: #dce7ed;
+  }
+  
+  .contracts-table td strong,
+  .contracts-table td small {
+    display: block;
+  }
+  
+  .contracts-table td small {
+    margin-top: 5px;
+    color: #8296a5;
+  }
+  
+  .contract-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .contract-actions button {
+    padding: 7px 10px;
+  }
+  
+  .contract-status {
+    display: inline-block;
+    padding: 5px 9px;
+    border: 1px solid #29434b;
+    border-radius: 20px;
+    color: #cbd5e1;
+    background: #101c20;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  
+  .contract-status-draft {
+    color: #facc15;
+    border-color: #66531a;
+  }
+  
+  .contract-status-sent {
+    color: #38bdf8;
+    border-color: #155e75;
+  }
+  
+  .contract-status-signed {
+    color: #4ade80;
+    border-color: #166534;
+  }
+  
+  .contract-status-cancelled {
+    color: #f87171;
+    border-color: #7f1d1d;
+  }
+  
+  .contracts-error {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 14px;
+    color: #fca5a5;
+    background: #260b0b;
+    border: 1px solid #7f1d1d;
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 640px) {
+    .contracts-dashboard {
+      padding: 18px 12px;
+    }
+  
+    .contracts-header h1 {
+      font-size: 23px;
+    }
+  
+    .contracts-toolbar {
+      flex-direction: column;
+    }
+  
+    .contracts-toolbar input,
+    .contracts-toolbar select {
+      width: 100%;
+    }
+  }
+  
