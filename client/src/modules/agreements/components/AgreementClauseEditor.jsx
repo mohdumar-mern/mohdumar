@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
 import TipTapEditor from "../../../components/Editor/TipTapEditor";
+import "./AgreementClauseEditor.css";
 
 const createClause = () => ({
   id: crypto.randomUUID(),
@@ -14,10 +14,20 @@ const AgreementClauseEditor = ({
   disabled = false,
 }) => {
   const [items, setItems] = useState(clauses);
+  const [openClauseId, setOpenClauseId] = useState(null);
 
   useEffect(() => {
     setItems(clauses);
   }, [clauses]);
+
+  useEffect(() => {
+    if (
+      openClauseId !== null &&
+      !items.some((clause) => clause.id === openClauseId)
+    ) {
+      setOpenClauseId(null);
+    }
+  }, [items, openClauseId]);
 
   const updateItems = (updatedItems) => {
     setItems(updatedItems);
@@ -25,15 +35,16 @@ const AgreementClauseEditor = ({
   };
 
   const updateClause = (id, field, value) => {
-    updateItems(
-      items.map((clause) =>
-        clause.id === id ? { ...clause, [field]: value } : clause
-      )
+    const updatedItems = items.map((clause) =>
+      clause.id === id ? { ...clause, [field]: value } : clause
     );
+
+    updateItems(updatedItems);
   };
 
   const addClause = () => {
     updateItems([...items, createClause()]);
+    setOpenClauseId(null);
   };
 
   const deleteClause = (id) => {
@@ -42,14 +53,21 @@ const AgreementClauseEditor = ({
     }
 
     updateItems(items.filter((clause) => clause.id !== id));
+
+    if (openClauseId === id) {
+      setOpenClauseId(null);
+    }
   };
 
   const moveClause = (index, direction) => {
     const nextIndex = index + direction;
 
-    if (nextIndex < 0 || nextIndex >= items.length) return;
+    if (nextIndex < 0 || nextIndex >= items.length) {
+      return;
+    }
 
     const updatedItems = [...items];
+
     [updatedItems[index], updatedItems[nextIndex]] = [
       updatedItems[nextIndex],
       updatedItems[index],
@@ -58,102 +76,147 @@ const AgreementClauseEditor = ({
     updateItems(updatedItems);
   };
 
+  const toggleClause = (id) => {
+    setOpenClauseId((currentId) => (currentId === id ? null : id));
+  };
+
   return (
     <div className="agreement-clause-editor">
-      <div className="flex items-center justify-between gap-3 mb-5">
+      <div className="agreement-clause-editor__header">
         <div>
-          <h2 className="text-xl font-semibold">Agreement Clauses</h2>
-          <p className="text-sm text-gray-500">
-            Edit, add, remove, or reorder agreement terms.
-          </p>
+          <h2>Agreement Clauses</h2>
+          <p>Edit, add, remove, or reorder agreement terms.</p>
         </div>
 
         <button
           type="button"
           onClick={addClause}
           disabled={disabled}
-          className="rounded-lg bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+          className="agreement-clause-editor__add"
         >
           + Add Clause
         </button>
       </div>
 
       {items.length === 0 && (
-        <p className="rounded-lg border border-dashed p-6 text-center text-gray-500">
+        <p className="agreement-clause-editor__empty">
           No clauses added yet. Click “Add Clause” to begin.
         </p>
       )}
 
-      <div className="space-y-5">
-        {items.map((clause, index) => (
-          <section
-            key={clause.id}
-            className="rounded-xl border border-gray-200 p-4"
-          >
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <span className="text-sm font-medium text-gray-500">
-                Clause {index + 1}
-              </span>
+      <div className="agreement-clause-editor__list">
+        {items.map((clause, index) => {
+          const isOpen = openClauseId === clause.id;
+          const titleId = `clause-title-${clause.id}`;
+          const contentId = `clause-content-${clause.id}`;
 
-              <div className="flex gap-2">
+          return (
+            <section
+              key={clause.id}
+              className={`agreement-clause-card ${
+                isOpen ? "is-open" : ""
+              }`}
+            >
+              <div className="agreement-clause-card__header">
                 <button
                   type="button"
-                  onClick={() => moveClause(index, -1)}
-                  disabled={disabled || index === 0}
-                  className="rounded border px-3 py-1 disabled:opacity-40"
-                  title="Move up"
+                  className="agreement-clause-card__toggle"
+                  onClick={() => toggleClause(clause.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={contentId}
                 >
-                  ↑
+                  <span className="agreement-clause-card__number">
+                    {index + 1}
+                  </span>
+
+                  <span className="agreement-clause-card__heading">
+                    <span className="agreement-clause-card__title">
+                      {clause.title?.trim() || `Clause ${index + 1}`}
+                    </span>
+
+                    <span className="agreement-clause-card__hint">
+                      {isOpen ? "Click to collapse" : "Click to expand"}
+                    </span>
+                  </span>
+
+                  <span
+                    className="agreement-clause-card__chevron"
+                    aria-hidden="true"
+                  >
+                    ▼
+                  </span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => moveClause(index, 1)}
-                  disabled={disabled || index === items.length - 1}
-                  className="rounded border px-3 py-1 disabled:opacity-40"
-                  title="Move down"
-                >
-                  ↓
-                </button>
+                <div className="agreement-clause-card__actions">
+                  <button
+                    type="button"
+                    onClick={() => moveClause(index, -1)}
+                    disabled={disabled || index === 0}
+                    className="agreement-clause-card__action"
+                    title="Move up"
+                    aria-label={`Move clause ${index + 1} up`}
+                  >
+                    ↑
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={() => deleteClause(clause.id)}
-                  disabled={disabled}
-                  className="rounded border border-red-200 px-3 py-1 text-red-600 disabled:opacity-40"
-                >
-                  Delete
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => moveClause(index, 1)}
+                    disabled={disabled || index === items.length - 1}
+                    className="agreement-clause-card__action"
+                    title="Move down"
+                    aria-label={`Move clause ${index + 1} down`}
+                  >
+                    ↓
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => deleteClause(clause.id)}
+                    disabled={disabled}
+                    className="agreement-clause-card__action agreement-clause-card__action--delete"
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <label className="mb-2 block text-sm font-medium">
-              Clause Title
-            </label>
+              {isOpen && (
+                <div
+                  id={contentId}
+                  className="agreement-clause-card__content"
+                >
+                  <label htmlFor={titleId}>Clause Title</label>
 
-            <input
-              type="text"
-              value={clause.title}
-              onChange={(event) =>
-                updateClause(clause.id, "title", event.target.value)
-              }
-              disabled={disabled}
-              placeholder="Enter clause title"
-              className="mb-4 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-500"
-            />
+                  <input
+                    id={titleId}
+                    type="text"
+                    value={clause.title ?? ""}
+                    onChange={(event) =>
+                      updateClause(
+                        clause.id,
+                        "title",
+                        event.target.value
+                      )
+                    }
+                    disabled={disabled}
+                    placeholder="Enter clause title"
+                  />
 
-            <label className="mb-2 block text-sm font-medium">
-              Clause Content
-            </label>
+                  <label>Clause Content</label>
 
-            <TipTapEditor
-              content={clause.content}
-              onChange={(html) =>
-                updateClause(clause.id, "content", html)
-              }
-            />
-          </section>
-        ))}
+                  <TipTapEditor
+                    content={clause.content ?? ""}
+                    onChange={(html) =>
+                      updateClause(clause.id, "content", html)
+                    }
+                    editable={!disabled}
+                  />
+                </div>
+              )}
+            </section>
+          );
+        })}
       </div>
     </div>
   );

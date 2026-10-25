@@ -1,0 +1,497 @@
+/* =========================================
+   AGREEMENT CLAUSE EDITOR
+========================================= */
+
+.agreement-clause-editor {
+    width: 100%;
+    min-width: 0;
+    color: inherit;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  
+  .agreement-clause-editor *,
+  .agreement-clause-editor *::before,
+  .agreement-clause-editor *::after {
+    box-sizing: border-box;
+  }
+  
+  /* =========================================
+     TOP HEADER
+  ========================================= */
+  
+  .agreement-clause-editor__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 20px;
+  }
+  
+  .agreement-clause-editor__header > div {
+    min-width: 0;
+  }
+  
+  .agreement-clause-editor__header h2 {
+    margin: 0 0 5px;
+    color: inherit;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  
+  .agreement-clause-editor__header p {
+    margin: 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  
+  /* =========================================
+     ADD CLAUSE BUTTON
+  ========================================= */
+  
+  .agreement-clause-editor__add {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: 9px 15px;
+    border: 1px solid var(--primary-color, #2563eb);
+    border-radius: 8px;
+    background: var(--primary-color, #2563eb);
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  
+  .agreement-clause-editor__add:hover:not(:disabled) {
+    background: var(--primary-hover, #1d4ed8);
+    border-color: var(--primary-hover, #1d4ed8);
+  }
+  
+  .agreement-clause-editor__add:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  
+  /* =========================================
+     EMPTY STATE
+  ========================================= */
+  
+  .agreement-clause-editor__empty {
+    margin: 0;
+    padding: 28px 18px;
+    border: 1px dashed var(--border-color, #d1d5db);
+    border-radius: 10px;
+    background: var(--muted-background, #f9fafb);
+    color: var(--text-secondary, #6b7280);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+  }
+  
+  /* =========================================
+     CLAUSE LIST
+  ========================================= */
+  
+  .agreement-clause-editor__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+  
+  /* =========================================
+     INDIVIDUAL CLAUSE CARD
+  ========================================= */
+  
+  .agreement-clause-card {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 10px;
+    background: var(--card-background, #fff);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  
+  .agreement-clause-card:hover {
+    border-color: var(--border-hover, #d1d5db);
+  }
+  
+  .agreement-clause-card.is-open {
+    border-color: var(--primary-color, #2563eb);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 4%);
+  }
+  
+  /* =========================================
+     CLAUSE HEADER
+  ========================================= */
+  
+  .agreement-clause-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    padding: 14px 16px;
+  }
+  
+  .agreement-clause-card__toggle {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .agreement-clause-card__toggle:hover {
+    background: transparent;
+  }
+  
+  .agreement-clause-card__toggle:disabled {
+    cursor: default;
+  }
+  
+  /* Clause number */
+  
+  .agreement-clause-card__number {
+    display: inline-flex;
+    flex: 0 0 32px;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--muted-background, #f3f4f6);
+    color: var(--text-secondary, #4b5563);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+  
+  .agreement-clause-card.is-open
+    .agreement-clause-card__number {
+    background: var(--primary-color, #2563eb);
+    color: #fff;
+  }
+  
+  /* Clause title and hint */
+  
+  .agreement-clause-card__heading {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  
+  .agreement-clause-card__title {
+    display: block;
+    overflow: hidden;
+    color: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .agreement-clause-card__hint {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-secondary, #6b7280);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+  
+  /* Chevron */
+  
+  .agreement-clause-card__chevron {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--text-secondary, #6b7280);
+    font-size: 12px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+  
+  .agreement-clause-card.is-open
+    .agreement-clause-card__chevron {
+    transform: rotate(180deg);
+  }
+  
+  /* =========================================
+     ACTION BUTTONS
+  ========================================= */
+  
+  .agreement-clause-card__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  
+  .agreement-clause-card__action {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 6px 9px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 7px;
+    background: var(--card-background, #fff);
+    color: var(--text-color, #374151);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+  
+  .agreement-clause-card__action:hover:not(:disabled) {
+    border-color: var(--border-hover, #9ca3af);
+    background: var(--muted-background, #f3f4f6);
+  }
+  
+  .agreement-clause-card__action:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  /* Delete button */
+  
+  .agreement-clause-card__action--delete {
+    border-color: #fecaca;
+    background: #fff;
+    color: #dc2626;
+  }
+  
+  .agreement-clause-card__action--delete:hover:not(:disabled) {
+    border-color: #f87171;
+    background: #fef2f2;
+    color: #b91c1c;
+  }
+  
+  /* =========================================
+     EXPANDED CLAUSE CONTENT
+  ========================================= */
+  
+  .agreement-clause-card__content {
+    width: 100%;
+    min-width: 0;
+    padding: 20px 16px;
+    border-top: 1px solid var(--border-color, #e5e7eb);
+    background: var(--content-background, #fff);
+  }
+  
+  .agreement-clause-card__content > label {
+    display: block;
+    margin: 0 0 8px;
+    color: var(--text-color, #374151);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  
+  /* Clause title input */
+  
+  .agreement-clause-card__content input[type="text"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    margin: 0 0 20px;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color, #d1d5db);
+    border-radius: 8px;
+    background: var(--input-background, #fff);
+    color: var(--text-color, #111827);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    outline: none;
+    box-shadow: none;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  
+  .agreement-clause-card__content input[type="text"]::placeholder {
+    color: var(--placeholder-color, #9ca3af);
+    opacity: 1;
+  }
+  
+  .agreement-clause-card__content input[type="text"]:hover:not(:disabled) {
+    border-color: var(--border-hover, #9ca3af);
+  }
+  
+  .agreement-clause-card__content input[type="text"]:focus {
+    border-color: var(--primary-color, #2563eb);
+    outline: none;
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 10%);
+  }
+  
+  .agreement-clause-card__content input[type="text"]:disabled {
+    background: var(--muted-background, #f3f4f6);
+    color: var(--text-secondary, #6b7280);
+    cursor: not-allowed;
+  }
+  
+  /* TipTap editor container: avoid changing its internal toolbar styles */
+  
+  .agreement-clause-card__content > :last-child {
+    min-width: 0;
+    max-width: 100%;
+  }
+  
+  /* =========================================
+     KEYBOARD ACCESSIBILITY
+  ========================================= */
+  
+  .agreement-clause-card__toggle:focus-visible,
+  .agreement-clause-card__action:focus-visible,
+  .agreement-clause-editor__add:focus-visible {
+    outline: 2px solid var(--primary-color, #2563eb);
+    outline-offset: 3px;
+  }
+  
+  /* =========================================
+     TABLET
+  ========================================= */
+  
+  @media (max-width: 768px) {
+    .agreement-clause-card__header {
+      gap: 10px;
+      padding: 12px;
+    }
+  
+    .agreement-clause-card__toggle {
+      gap: 9px;
+    }
+  
+    .agreement-clause-card__actions {
+      gap: 5px;
+    }
+  
+    .agreement-clause-card__action {
+      min-width: 32px;
+      min-height: 32px;
+      padding: 5px 7px;
+    }
+  
+    .agreement-clause-card__content {
+      padding: 18px 12px;
+    }
+  }
+  
+  /* =========================================
+     MOBILE
+  ========================================= */
+  
+  @media (max-width: 480px) {
+    .agreement-clause-editor__header {
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+  
+    .agreement-clause-editor__header h2 {
+      font-size: 17px;
+    }
+  
+    .agreement-clause-editor__header p {
+      font-size: 12px;
+    }
+  
+    .agreement-clause-editor__add {
+      min-height: 36px;
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+  
+    .agreement-clause-editor__list {
+      gap: 10px;
+    }
+  
+    .agreement-clause-card__header {
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px;
+    }
+  
+    .agreement-clause-card__toggle {
+      flex: 1 1 100%;
+    }
+  
+    .agreement-clause-card__title {
+      font-size: 13px;
+    }
+  
+    .agreement-clause-card__actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  
+    .agreement-clause-card__content {
+      padding: 16px 12px;
+    }
+  
+    .agreement-clause-card__content input[type="text"] {
+      min-height: 40px;
+      font-size: 14px;
+    }
+  }
+  
+  /* =========================================
+     REDUCED MOTION
+  ========================================= */
+  
+  @media (prefers-reduced-motion: reduce) {
+    .agreement-clause-card,
+    .agreement-clause-card__number,
+    .agreement-clause-card__chevron,
+    .agreement-clause-card__action,
+    .agreement-clause-editor__add,
+    .agreement-clause-card__content input[type="text"] {
+      transition: none;
+    }
+  }

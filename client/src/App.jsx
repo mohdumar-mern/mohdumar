@@ -74,6 +74,18 @@ const UpdateProfile = lazy(
   () => import("./private/Dashboard/Profile/UpdateProfile"),
 );
 
+// Contract Generator pages
+const ContractsDashboard = lazy(
+  () => import("./modules/agreements/pages/ContractsDashboard"),
+);
+
+const ContractDetails = lazy(
+  () => import("./modules/agreements/pages/ContractDetails"),
+);
+const ContractForm = lazy(
+  () => import("./modules/agreements/pages/ContractForm")
+);
+
 const App = () => (
   <Router>
     <Toaster position="top-right" reverseOrder={false} />
@@ -132,7 +144,15 @@ const App = () => (
               element={<LeadAddUpdate />}
             />
             <Route path="leads/:id" element={<LeadDetails />} />
+            {/* Contract Generator Routes */}
+            <Route path="agreements" element={<ContractsDashboard />} />
+            <Route path="agreements/new" element={<ContractForm />} />
+            <Route
+  path="agreements/:id/edit"
+  element={<ContractForm />}
+/>
 
+            <Route path="agreements/:id" element={<ContractDetails />} />
             {/* Catch unknown protected dashboard routes */}
             <Route path="*" element={<NotFound />} />
           </Route>
