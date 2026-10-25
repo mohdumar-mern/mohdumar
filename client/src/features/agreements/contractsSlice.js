@@ -177,6 +177,27 @@ export const fetchContractVersions = createAsyncThunk(
   }
 );
 
+export const fetchLeadForContract = createAsyncThunk(
+    "contracts/fetchLeadForContract",
+    async (leadId, { rejectWithValue }) => {
+      try {
+        const response = await axios.get(
+          `${API_URL.replace(/\/+$/, "")}/leads/${leadId}`,
+          {
+            headers: getAuthHeaders(),
+          }
+        );
+  
+        return response.data?.lead || response.data?.data || response.data;
+      } catch (error) {
+        return rejectWithValue(
+          error.response?.data?.message ||
+            "Unable to load lead details."
+        );
+      }
+    }
+  );
+
 // DOWNLOAD CONTRACT PDF
 
 export const downloadContractPdf = createAsyncThunk(

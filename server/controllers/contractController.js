@@ -4,6 +4,8 @@ import Contract from "../models/contractModel.js";
 import { getPagination, getPaginationMeta } from "../utils/pagination.js";
 import { generateContractPdf } from "../services/contractPdfService.js";
 import { generateContractNumber } from "../services/contractNumberService.js";
+import Lead from "../models/Lead.js";
+
 
 const CONTRACT_STATUSES = ["draft", "sent", "signed", "cancelled"];
 
@@ -20,8 +22,27 @@ const EDITABLE_FIELDS = [
   "endDate",
   "clauses",
   "status",
+  "leadId"
 ];
 
+
+const getVerifiedLead = async (leadId) => {
+  if (!mongoose.isValidObjectId(leadId)) {
+    const error = new Error("Invalid lead ID.");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const lead = await Lead.findById(leadId);
+
+  if (!lead) {
+    const error = new Error("Lead not found.");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return lead;
+};
 const createError = (message, statusCode = 400) => {
   const error = new Error(message);
   error.statusCode = statusCode;
@@ -260,6 +281,19 @@ const buildContractPayload = (body, { isCreate = false } = {}) => {
 
         payload.status = value;
         break;
+      case "leadId":
+        if (body.leadId !== undefined) {
+          if (
+            body.leadId !== null &&
+            body.leadId !== "" &&
+            !mongoose.isValidObjectId(body.leadId)
+          ) {
+            throw createError("Invalid lead ID.");
+          }
+        
+          payload.leadId = body.leadId || null;
+        }
+        break;
 
       default:
         throw createError(`Unsupported field: ${field}.`);
@@ -395,7 +429,19 @@ export const getContractById = asyncHandler(async (req, res) => {
 
 // POST /api/contracts
 export const createContract = asyncHandler(async (req, res) => {
-  const payload = buildContractPayload(req.body, { isCreate: true });
+  const leadId = req.body.leadId || null;
+
+if (leadId) {
+  await getVerifiedLead(leadId);
+}
+
+const payload = buildContractPayload(req.body, {
+  isCreate: true,
+});
+
+payload.leadId = leadId;
+
+
 
   const contract = new Contract({
     ...payload,
