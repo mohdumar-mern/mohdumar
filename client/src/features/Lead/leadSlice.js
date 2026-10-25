@@ -6,7 +6,7 @@ import { getAuthHeaders } from "../../utils/AuthHeaders";
 const API_URL = import.meta.env.VITE_REACT_APP_BACKEND_API_URL;
 
 // Ensure the base URL ends with "/" and includes your API prefix if required.
-const LEADS_URL = `${API_URL.replace(/\/+$/, "")}/api/leads`;
+const LEADS_URL = `${API_URL || ""}leads`;
 
 // Extract a useful error message from the backend.
 const getErrorMessage = (error, fallback) =>
