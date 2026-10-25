@@ -1,3 +1,5 @@
+
+// export default HeaderComponents;
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -92,12 +94,23 @@ const HeaderComponents = () => {
                     </NavLink>
                   </li>
                 ))}
-              <li className="flex items-center gap-2 text-xs text-cyan-400 px-2 py-3 mt-2 border-t border-cyan-500/10">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-                </span>
-                Available_for_hire
+
+            
+
+              {/* Mobile Login Button */}
+              <li className="pt-3">
+                <NavLink
+                  to="/login"
+                  onClick={closeMenu}
+                  className={({ isActive }) =>
+                    `${loginButtonClass} w-full ${
+                      isActive ? "bg-cyan-400/10 border-cyan-400" : ""
+                    }`
+                  }
+                >
+                  <LogIn size={16} />
+                  Login
+                </NavLink>
               </li>
             </ul>
           </div>
