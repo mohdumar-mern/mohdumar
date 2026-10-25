@@ -147,6 +147,11 @@ const App = () => (
             {/* Contract Generator Routes */}
             <Route path="agreements" element={<ContractsDashboard />} />
             <Route path="agreements/new" element={<ContractForm />} />
+            <Route
+  path="agreements/:id/edit"
+  element={<ContractForm />}
+/>
+
             <Route path="agreements/:id" element={<ContractDetails />} />
             {/* Catch unknown protected dashboard routes */}
             <Route path="*" element={<NotFound />} />

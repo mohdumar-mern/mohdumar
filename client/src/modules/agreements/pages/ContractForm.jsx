@@ -1,10 +1,20 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import AgreementClauseEditor from "../components/AgreementClauseEditor";
+import {
+  createContract,
+  updateContract,
+  fetchContractById,
+  clearCurrentContract,
+  clearContractError,
+} from "../../../features/agreements/contractsSlice";
+
 import "./ContractForm.css";
-import { createContract } from "../../../features/agreements/contractsSlice";
+import { defaultFreelanceClauses } from "./defaultClause";
 
 const initialForm = {
   title: "",
@@ -13,23 +23,94 @@ const initialForm = {
   freelancerName: "",
   projectDescription: "",
   paymentAmount: "",
-  currency: "INR",
+  currency: "USD",
   paymentTerms: "",
   startDate: "",
   endDate: "",
-  clauses: [],
+  clauses: defaultFreelanceClauses,
+};
+
+const toDateInput = (value) => {
+  if (!value) return "";
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "";
+
+  return `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+};
+
+const getErrorMessage = (error) => {
+  if (typeof error === "string") return error;
+  return (
+    error?.message ||
+    error?.error ||
+    "Something went wrong. Please try again."
+  );
 };
 
 export default function ContractForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = Boolean(id);
 
-  const { saving, error } = useSelector((state) => state.contracts);
+  const {
+    currentContract,
+    detailLoading,
+    saving,
+    error,
+  } = useSelector((state) => state.contracts);
 
-  const [form, setForm] = useState(initialForm);
-  const [validationError, setValidationError] = useState("");
+  const [form, setForm] = useState(createInitialForm);
+  const [loadedContractId, setLoadedContractId] = useState(null);
+  const [pageError, setPageError] = useState("");
 
-  const updateField = (event) => {
+  useEffect(() => {
+    dispatch(clearContractError());
+    dispatch(clearCurrentContract());
+
+    if (isEditMode) {
+      dispatch(fetchContractById(id));
+    } else {
+        setForm(createInitialForm());
+      setLoadedContractId(null);
+    }
+
+    return () => {
+      dispatch(clearCurrentContract());
+    };
+  }, [dispatch, id, isEditMode]);
+
+  useEffect(() => {
+    if (!isEditMode || !currentContract?._id) return;
+    if (String(currentContract._id) !== String(id)) return;
+    if (loadedContractId === String(currentContract._id)) return;
+
+    setForm({
+      title: currentContract.title || "",
+      clientName: currentContract.clientName || "",
+      clientEmail: currentContract.clientEmail || "",
+      freelancerName: currentContract.freelancerName || "",
+      projectDescription: currentContract.projectDescription || "",
+      paymentAmount: currentContract.paymentAmount ?? "",
+      currency: currentContract.currency || "USD",
+      paymentTerms: currentContract.paymentTerms || "",
+      startDate: toDateInput(currentContract.startDate),
+      endDate: toDateInput(currentContract.endDate),
+      clauses: (currentContract.clauses || []).map((clause) => ({
+        ...clause,
+        id: clause._id || clause.id || crypto.randomUUID(),
+        title: clause.title || "",
+        content: clause.content || "",
+      })),
+    });
+
+    setLoadedContractId(String(currentContract._id));
+  }, [currentContract, id, isEditMode, loadedContractId]);
+
+  const handleChange = (event) => {
     const { name, value } = event.target;
 
     setForm((previous) => ({
@@ -37,210 +118,265 @@ export default function ContractForm() {
       [name]: value,
     }));
   };
+  const createInitialForm = () => ({
+    ...initialForm,
+    clauses: defaultFreelanceClauses.map((clause) => ({
+      ...clause,
+      id: crypto.randomUUID(),
+    })),
+  });
 
   const handleClausesChange = (clauses) => {
-    setForm((previous) => ({ ...previous, clauses }));
+    setForm((previous) => ({
+      ...previous,
+      clauses,
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setValidationError("");
+    setPageError("");
 
-    if (!form.title.trim() || !form.clientName.trim()) {
-      setValidationError("Contract title and client name are required.");
+    if (!form.title.trim()) {
+      setPageError("Contract title is required.");
+      return;
+    }
+
+    if (!form.clientName.trim()) {
+      setPageError("Client name is required.");
       return;
     }
 
     if (
-      form.paymentAmount !== "" &&
-      (!Number.isFinite(Number(form.paymentAmount)) ||
-        Number(form.paymentAmount) < 0)
+      form.paymentAmount === "" ||
+      !Number.isFinite(Number(form.paymentAmount)) ||
+      Number(form.paymentAmount) < 0
     ) {
-      setValidationError("Enter a valid payment amount.");
+      setPageError("Enter a valid payment amount.");
       return;
     }
 
     if (
       form.startDate &&
       form.endDate &&
-      form.endDate < form.startDate
+      new Date(form.endDate) < new Date(form.startDate)
     ) {
-      setValidationError("End date cannot be earlier than start date.");
+      setPageError("End date cannot be before start date.");
       return;
     }
 
     const payload = {
       ...form,
-      paymentAmount:
-        form.paymentAmount === "" ? 0 : Number(form.paymentAmount),
+      title: form.title.trim(),
+      clientName: form.clientName.trim(),
+      clientEmail: form.clientEmail.trim(),
+      freelancerName: form.freelancerName.trim(),
+      paymentAmount: Number(form.paymentAmount),
+      clauses: form.clauses.map((clause) => ({
+        ...(clause._id ? { _id: clause._id } : {}),
+        id: clause.id,
+        title: clause.title,
+        content: clause.content,
+      })),
     };
-    console.log("payroll", payload)
 
-    const result = await dispatch(createContract(payload));
+    try {
+      let result;
 
-    if (createContract.fulfilled.match(result)) {
-      const contract = result.payload?.contract;
+      if (isEditMode) {
+        result = await dispatch(
+          updateContract({ id, payload })
+        ).unwrap();
 
-      if (contract?._id) {
-        navigate(`/dashboard/agreements/${contract._id}`);
+        toast.success("Contract updated successfully.");
       } else {
-        navigate("/dashboard/agreements");
+        result = await dispatch(createContract(payload)).unwrap();
+
+        toast.success("Contract created successfully.");
       }
+
+      const savedContract = result?.contract || result?.data || result;
+      const savedId = savedContract?._id || id;
+
+      if (!savedId) {
+        navigate("/dashboard/agreements");
+        return;
+      }
+
+      navigate(`/dashboard/agreements/${savedId}`);
+    } catch (submitError) {
+      setPageError(getErrorMessage(submitError));
     }
   };
+
+  if (isEditMode && detailLoading && !loadedContractId) {
+    return (
+      <div className="contract-form-state">
+        Loading contract details...
+      </div>
+    );
+  }
+
+  if (isEditMode && !detailLoading && !loadedContractId) {
+    return (
+      <div className="contract-form-state">
+        <p>
+          {error || "Contract could not be loaded. Check its ID and permissions."}
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate("/dashboard/agreements")}
+        >
+          Back to Contracts
+        </button>
+      </div>
+    );
+  }
 
   return (
     <main className="contract-form-page">
       <header className="contract-form-header">
         <div>
-          <p className="contract-form-eyebrow">AGREEMENTS / NEW</p>
-          <h1>Create Contract</h1>
-          <p>Create and manage a contract for your project.</p>
+          <p className="contract-form-eyebrow">CONTRACT MANAGEMENT</p>
+          <h1>{isEditMode ? "Edit Contract" : "Create Contract"}</h1>
+          <p>
+            {isEditMode
+              ? "Update the agreement details and save your changes."
+              : "Enter agreement details and add your contract clauses."}
+          </p>
         </div>
 
         <button
           type="button"
-          className="contract-secondary-button"
-          onClick={() => navigate("/dashboard/agreements")}
+          className="contract-form-secondary"
+          onClick={() => navigate(
+            isEditMode
+              ? `/dashboard/agreements/${id}`
+              : "/dashboard/agreements"
+          )}
         >
           Cancel
         </button>
       </header>
 
-      {(validationError || error) && (
+      {(pageError || error) && (
         <div className="contract-form-error" role="alert">
-          {validationError ||
-            (typeof error === "string"
-              ? error
-              : error?.message || "Unable to save contract.")}
+          {pageError || error}
         </div>
       )}
 
       <form className="contract-form" onSubmit={handleSubmit}>
         <section className="contract-form-section">
-          <h2>Basic Information</h2>
+          <h2>Contract Information</h2>
 
           <div className="contract-form-grid">
-            <label className="contract-field contract-field-full">
+            <label className="contract-form-field">
               Contract Title *
               <input
                 name="title"
                 value={form.title}
-                onChange={updateField}
-                placeholder="Website Development Agreement"
+                onChange={handleChange}
+                maxLength={200}
                 required
               />
             </label>
 
-            <label className="contract-field">
+            <label className="contract-form-field">
               Client Name *
               <input
                 name="clientName"
                 value={form.clientName}
-                onChange={updateField}
-                placeholder="Client's full name"
+                onChange={handleChange}
+                maxLength={200}
                 required
               />
             </label>
 
-            <label className="contract-field">
+            <label className="contract-form-field">
               Client Email
               <input
-                type="email"
                 name="clientEmail"
+                type="email"
                 value={form.clientEmail}
-                onChange={updateField}
-                placeholder="client@example.com"
+                onChange={handleChange}
               />
             </label>
 
-            <label className="contract-field contract-field-full">
-              Freelancer / Service Provider
+            <label className="contract-form-field">
+              Freelancer / Provider
               <input
                 name="freelancerName"
                 value={form.freelancerName}
-                onChange={updateField}
-                placeholder="Your name or business name"
+                onChange={handleChange}
               />
             </label>
-          </div>
-        </section>
 
-        <section className="contract-form-section">
-          <h2>Project Details</h2>
-
-          <label className="contract-field">
-            Project Description
-            <textarea
-              name="projectDescription"
-              value={form.projectDescription}
-              onChange={updateField}
-              placeholder="Describe the project, deliverables and scope..."
-              rows={5}
-            />
-          </label>
-        </section>
-
-        <section className="contract-form-section">
-          <h2>Payment & Timeline</h2>
-
-          <div className="contract-form-grid">
-            <label className="contract-field">
-              Payment Amount
+            <label className="contract-form-field">
+              Payment Amount *
               <input
-                type="number"
                 name="paymentAmount"
+                type="number"
                 min="0"
                 step="0.01"
                 value={form.paymentAmount}
-                onChange={updateField}
-                placeholder="25000"
+                onChange={handleChange}
+                required
               />
             </label>
 
-            <label className="contract-field">
+            <label className="contract-form-field">
               Currency
               <select
                 name="currency"
                 value={form.currency}
-                onChange={updateField}
+                onChange={handleChange}
               >
-                <option value="INR">INR — Indian Rupee</option>
-                <option value="USD">USD — US Dollar</option>
-                <option value="EUR">EUR — Euro</option>
-                <option value="GBP">GBP — British Pound</option>
+                <option value="USD">USD</option>
+                <option value="INR">INR</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="AED">AED</option>
               </select>
             </label>
 
-            <label className="contract-field contract-field-full">
+            <label className="contract-form-field">
+              Start Date
+              <input
+                name="startDate"
+                type="date"
+                value={form.startDate}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className="contract-form-field">
+              End Date
+              <input
+                name="endDate"
+                type="date"
+                min={form.startDate || undefined}
+                value={form.endDate}
+                onChange={handleChange}
+              />
+            </label>
+
+            <label className="contract-form-field contract-form-full">
               Payment Terms
               <textarea
                 name="paymentTerms"
-                value={form.paymentTerms}
-                onChange={updateField}
-                placeholder="e.g. 50% upfront and 50% on completion"
                 rows={3}
+                value={form.paymentTerms}
+                onChange={handleChange}
               />
             </label>
 
-            <label className="contract-field">
-              Start Date
-              <input
-                type="date"
-                name="startDate"
-                value={form.startDate}
-                onChange={updateField}
-              />
-            </label>
-
-            <label className="contract-field">
-              End Date
-              <input
-                type="date"
-                name="endDate"
-                min={form.startDate || undefined}
-                value={form.endDate}
-                onChange={updateField}
+            <label className="contract-form-field contract-form-full">
+              Project Description
+              <textarea
+                name="projectDescription"
+                rows={4}
+                value={form.projectDescription}
+                onChange={handleChange}
               />
             </label>
           </div>
@@ -248,27 +384,35 @@ export default function ContractForm() {
 
         <section className="contract-form-section">
           <h2>Contract Clauses</h2>
-          <p className="contract-form-hint">
-            Add the terms and conditions that apply to this contract.
-          </p>
-
           <AgreementClauseEditor
             clauses={form.clauses}
             onChange={handleClausesChange}
           />
         </section>
 
-        <footer className="contract-form-footer">
+        <footer className="contract-form-actions">
           <button
             type="button"
-            className="contract-secondary-button"
-            onClick={() => navigate("/dashboard/agreements")}
+            className="contract-form-secondary"
+            onClick={() => navigate(
+              isEditMode
+                ? `/dashboard/agreements/${id}`
+                : "/dashboard/agreements"
+            )}
           >
             Cancel
           </button>
 
-          <button type="submit" disabled={saving}>
-            {saving ? "Saving Contract..." : "Create Contract"}
+          <button
+            type="submit"
+            className="contract-form-primary"
+            disabled={saving}
+          >
+            {saving
+              ? "Saving..."
+              : isEditMode
+                ? "Save Changes"
+                : "Create Contract"}
           </button>
         </footer>
       </form>

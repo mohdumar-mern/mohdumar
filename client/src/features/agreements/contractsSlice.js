@@ -80,25 +80,46 @@ export const createContract = createAsyncThunk(
 );
 
 // UPDATE CONTRACT
+// export const updateContract = createAsyncThunk(
+//   "contracts/updateContract",
+//   async ({ id, ...payload }, { rejectWithValue }) => {
+//     try {
+//       const { data } = await axios.patch(
+//         `${CONTRACTS_URL}/${id}`,
+//         payload,
+//         { headers: getAuthHeaders() }
+//       );
+
+//       return data;
+//     } catch (error) {
+//       return rejectWithValue(
+//         getErrorMessage(error, "Failed to update contract.")
+//       );
+//     }
+//   }
+// );
+
 export const updateContract = createAsyncThunk(
-  "contracts/updateContract",
-  async ({ id, ...payload }, { rejectWithValue }) => {
-    try {
-      const { data } = await axios.patch(
-        `${CONTRACTS_URL}/${id}`,
-        payload,
-        { headers: getAuthHeaders() }
-      );
-
-      return data;
-    } catch (error) {
-      return rejectWithValue(
-        getErrorMessage(error, "Failed to update contract.")
-      );
+    "contracts/updateContract",
+    async ({ id, payload }, { rejectWithValue }) => {
+      try {
+        const response = await axios.patch(
+          `${CONTRACTS_URL}/${id}`,
+          payload,
+          { headers: getAuthHeaders() }
+        );
+  
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(
+          error.response?.data?.message ||
+          error.message ||
+          "Failed to update contract."
+        );
+      }
     }
-  }
-);
-
+  );
+  
 // DELETE CONTRACT
 export const deleteContract = createAsyncThunk(
   "contracts/deleteContract",
