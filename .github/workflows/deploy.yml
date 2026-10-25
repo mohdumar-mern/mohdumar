@@ -1,0 +1,67 @@
+name: CI/CD Portfolio
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}       # ← yeh add karo
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }} # ← yeh add karo
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Client
+      - name: Install Client Dependencies
+        run: cd client && npm install
+
+      - name: Run Client Lint
+        run: cd client && npm run lint
+
+      - name: Run Client Tests
+        run: cd client && npm test
+
+      # Server
+      - name: Install Server Dependencies
+        run: cd server && npm install
+
+      - name: Run Server Format Check
+        run: cd server && npm run format:check
+
+      - name: Run Server Tests
+        run: cd server && npm test
+
+  deploy-client:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Deploy Client to Vercel
+        run: vercel --cwd . --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  deploy-server:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}

@@ -180,7 +180,6 @@
 // };
 
 // export default Sidebar;
-
 import {
   LogOut,
   Plus,
@@ -189,6 +188,14 @@ import {
   LayoutDashboard,
   Contact,
   Briefcase,
+  BookOpen,
+  Users,
+  FolderKanban,
+  FileCheck,
+  Receipt,
+  Wallet,
+  ClipboardCheck,
+  CalendarClock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

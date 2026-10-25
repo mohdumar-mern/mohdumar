@@ -42,7 +42,7 @@ import { loginValidator } from "../validator/loginValidator.js";
  *       400:
  *         description: Validation or registration error
  */
-router.post('/register', registerValidator, register);
+router.post("/register", registerValidator, register);
 
 /**
  * @swagger
@@ -72,6 +72,6 @@ router.post('/register', registerValidator, register);
  *       422:
  *         description: Validation error
  */
-router.post('/login', loginValidator, login);
+router.post("/login", loginValidator, login);
 
 export default router;
