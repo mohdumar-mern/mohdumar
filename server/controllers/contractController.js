@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 import asyncHandler from "../utils/asyncHandler.js";
 import Contract from "../models/contractModel.js";
@@ -45,9 +44,7 @@ const rejectUnknownFields = (body, allowedFields) => {
   );
 
   if (unknownFields.length) {
-    throw createError(
-      `Unsupported field(s): ${unknownFields.join(", ")}.`
-    );
+    throw createError(`Unsupported field(s): ${unknownFields.join(", ")}.`);
   }
 };
 
@@ -339,10 +336,7 @@ export const getContracts = asyncHandler(async (req, res) => {
 
 // GET /api/contracts/:id
 export const getContractById = asyncHandler(async (req, res) => {
-  const contract = await findOwnedContractOrThrow(
-    req.params.id,
-    req.user._id
-  );
+  const contract = await findOwnedContractOrThrow(req.params.id, req.user._id);
 
   res.status(200).json({
     success: true,
@@ -375,10 +369,7 @@ export const createContract = asyncHandler(async (req, res) => {
 
 // PATCH /api/contracts/:id
 export const updateContract = asyncHandler(async (req, res) => {
-  const contract = await findOwnedContractOrThrow(
-    req.params.id,
-    req.user._id
-  );
+  const contract = await findOwnedContractOrThrow(req.params.id, req.user._id);
 
   const payload = buildContractPayload(req.body);
 
@@ -464,10 +455,7 @@ export const updateContract = asyncHandler(async (req, res) => {
 
 // DELETE /api/contracts/:id
 export const deleteContract = asyncHandler(async (req, res) => {
-  const contract = await findOwnedContractOrThrow(
-    req.params.id,
-    req.user._id
-  );
+  const contract = await findOwnedContractOrThrow(req.params.id, req.user._id);
 
   if (contract.status === "signed") {
     throw createError("Signed contracts cannot be deleted.");
@@ -482,128 +470,122 @@ export const deleteContract = asyncHandler(async (req, res) => {
   });
 });
 
-
-
-
 export const downloadContractPdf = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-  
-    if (!mongoose.isValidObjectId(id)) {
-      res.status(400);
-      throw new Error("Invalid contract ID.");
-    }
-  
-    const contract = await Contract.findOne({
-      _id: id,
-      createdBy: req.user._id,
-    });
-  
-    if (!contract) {
-      res.status(404);
-      throw new Error("Contract not found.");
-    }
-  
-    const pdfBuffer = await generateContractPdf(contract);
-  
-    const contractRef = String(contract.contractNumber || contract._id)
-      .replace(/[^a-zA-Z0-9_-]/g, "_");
-  
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="contract-${contractRef}.pdf"`
-    );
-    res.setHeader("Content-Length", pdfBuffer.length);
-    res.setHeader("Cache-Control", "private, no-store");
-  
-    return res.status(200).send(pdfBuffer);
-  });
-  
+  const { id } = req.params;
 
-  
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400);
+    throw new Error("Invalid contract ID.");
+  }
+
+  const contract = await Contract.findOne({
+    _id: id,
+    createdBy: req.user._id,
+  });
+
+  if (!contract) {
+    res.status(404);
+    throw new Error("Contract not found.");
+  }
+
+  const pdfBuffer = await generateContractPdf(contract);
+
+  const contractRef = String(contract.contractNumber || contract._id).replace(
+    /[^a-zA-Z0-9_-]/g,
+    "_"
+  );
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="contract-${contractRef}.pdf"`
+  );
+  res.setHeader("Content-Length", pdfBuffer.length);
+  res.setHeader("Cache-Control", "private, no-store");
+
+  return res.status(200).send(pdfBuffer);
+});
+
 export const getContractVersions = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-  
-    if (!mongoose.isValidObjectId(id)) {
-      res.status(400);
-      throw new Error("Invalid contract ID.");
-    }
-  
-    const contract = await Contract.findOne({
-      _id: id,
-      createdBy: req.user._id,
-    }).select("contractNumber title versions");
-  
-    if (!contract) {
-      res.status(404);
-      throw new Error("Contract not found.");
-    }
-  
-    res.status(200).json({
-      success: true,
-      data: {
-        contractId: contract._id,
-        contractNumber: contract.contractNumber,
-        title: contract.title,
-        versions: contract.versions,
-      },
-    });
+  const { id } = req.params;
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400);
+    throw new Error("Invalid contract ID.");
+  }
+
+  const contract = await Contract.findOne({
+    _id: id,
+    createdBy: req.user._id,
+  }).select("contractNumber title versions");
+
+  if (!contract) {
+    res.status(404);
+    throw new Error("Contract not found.");
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      contractId: contract._id,
+      contractNumber: contract.contractNumber,
+      title: contract.title,
+      versions: contract.versions,
+    },
+  });
+});
+
+export const updateContractStatus = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const allowedTransitions = {
+    draft: ["sent", "cancelled"],
+    sent: ["draft", "cancelled"],
+    cancelled: [],
+    signed: [],
+  };
+
+  if (!mongoose.isValidObjectId(id)) {
+    res.status(400);
+    throw new Error("Invalid contract ID.");
+  }
+
+  if (!["draft", "sent", "cancelled"].includes(status)) {
+    res.status(400);
+    throw new Error(
+      "Invalid status. Signing requires a separate signing workflow."
+    );
+  }
+
+  const contract = await Contract.findOne({
+    _id: id,
+    createdBy: req.user._id,
   });
 
-  
-  
-export const updateContractStatus = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-  
-    const allowedTransitions = {
-      draft: ["sent", "cancelled"],
-      sent: ["draft", "cancelled"],
-      cancelled: [],
-      signed: [],
-    };
-  
-    if (!mongoose.isValidObjectId(id)) {
-      res.status(400);
-      throw new Error("Invalid contract ID.");
-    }
-  
-    if (!["draft", "sent", "cancelled"].includes(status)) {
-      res.status(400);
-      throw new Error(
-        "Invalid status. Signing requires a separate signing workflow."
-      );
-    }
-  
-    const contract = await Contract.findOne({
-      _id: id,
-      createdBy: req.user._id,
-    });
-  
-    if (!contract) {
-      res.status(404);
-      throw new Error("Contract not found.");
-    }
-  
-    if (!allowedTransitions[contract.status]?.includes(status)) {
-      res.status(400);
-      throw new Error(
-        `Status transition from '${contract.status}' to '${status}' is not allowed.`
-      );
-    }
-  
-    // Record the previous state before changing the status.
-    recordVersion(contract, req.user._id);
-  
-    contract.status = status;
-    contract.lastModifiedBy = req.user._id;
-  
-    await contract.save();
-  
-    res.status(200).json({
-      success: true,
-      message: "Contract status updated successfully.",
-      data: { contract },
-    });
+  if (!contract) {
+    res.status(404);
+    throw new Error("Contract not found.");
+  }
+
+  if (!allowedTransitions[contract.status]?.includes(status)) {
+    res.status(400);
+    throw new Error(
+      `Status transition from '${contract.status}' to '${status}' is not allowed.`
+    );
+  }
+
+  // Record the previous state before changing the status.
+  recordVersion(contract, req.user._id);
+
+  contract.status = status;
+  contract.lastModifiedBy = req.user._id;
+
+  await contract.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Contract status updated successfully.",
+    data: { contract },
   });
-  
+});

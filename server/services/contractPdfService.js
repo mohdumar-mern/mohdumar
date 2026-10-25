@@ -1,4 +1,3 @@
-
 import puppeteer from "puppeteer";
 
 const escapeHtml = (value = "") =>
@@ -46,8 +45,10 @@ const buildContractHtml = (contract) => {
       (clause, index) => `
         <section class="clause">
           <h2>${index + 1}. ${escapeHtml(clause.title)}</h2>
-          <div class="clause-content">${escapeHtml(clause.content)
-            .replace(/\r\n|\r|\n/g, "<br>")}</div>
+          <div class="clause-content">${escapeHtml(clause.content).replace(
+            /\r\n|\r|\n/g,
+            "<br>"
+          )}</div>
         </section>
       `
     )
@@ -210,12 +211,14 @@ const buildContractHtml = (contract) => {
   </div>
 
   <h2>Project Description</h2>
-  <p>${escapeHtml(contract.projectDescription || "No project description provided.")
-    .replace(/\r\n|\r|\n/g, "<br>")}</p>
+  <p>${escapeHtml(
+    contract.projectDescription || "No project description provided."
+  ).replace(/\r\n|\r|\n/g, "<br>")}</p>
 
   <h2>Payment Terms</h2>
-  <p>${escapeHtml(contract.paymentTerms || "No payment terms specified.")
-    .replace(/\r\n|\r|\n/g, "<br>")}</p>
+  <p>${escapeHtml(
+    contract.paymentTerms || "No payment terms specified."
+  ).replace(/\r\n|\r|\n/g, "<br>")}</p>
 
   <h2>Terms and Conditions</h2>
   ${
@@ -253,7 +256,8 @@ export const generateContractPdf = async (contract) => {
       format: "A4",
       printBackground: true,
       displayHeaderFooter: true,
-      headerTemplate: '<div style="font-size:8px;width:100%;margin:0 20mm;color:#637487;"></div>',
+      headerTemplate:
+        '<div style="font-size:8px;width:100%;margin:0 20mm;color:#637487;"></div>',
       footerTemplate: `
         <div style="font-size:8px;width:100%;margin:0 20mm;display:flex;justify-content:space-between;color:#637487;">
           <span>Confidential Contract</span>

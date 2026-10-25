@@ -26,9 +26,9 @@ router
   .delete(deleteContract);
 
 router
-  .router("/:id/pdf")
-  .get("/:id/pdf", downloadContractPdf)
-  .get("/:id/versions", getContractVersions)
-  .patch("/:id/status", updateContractStatus);
+  .route("/:id/pdf")
+  .get(downloadContractPdf)
+  .get(getContractVersions)
+  .patch(updateContractStatus);
 
 export default router;

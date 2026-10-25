@@ -1,4 +1,3 @@
-
 import ContractCounter from "../models/contractCounterModel.js";
 
 export const generateContractNumber = async () => {
