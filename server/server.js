@@ -14,10 +14,12 @@ connectDB()
 
       // Start the keep-alive function
       keepAlive();
-    }); 
-    
+    });
   })
   .catch((err) => {
     console.error("Failed to connect to database", err.message);
     process.exit(1);
   });
+// setTimeout(() => {
+//   throw new Error("Simulated crash!");
+// }, 3000);

@@ -10,10 +10,10 @@ import {
   deleteService,
 } from "../controllers/servicesController.js";
 
-router.get('/', getServices)
-router.get('/:id/view', getSingleService)
-router.post('/add',  addService)
-router.put('/:id/edit',  updateService)
-router.delete('/:id', deleteService)
+router.get("/", getServices);
+router.get("/:id/view", getSingleService);
+router.post("/add", addService);
+router.put("/:id/edit", updateService);
+router.delete("/:id", deleteService);
 
-export default router
+export default router;

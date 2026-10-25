@@ -6,4 +6,4 @@ const limiter = rateLimit({
   message: "Too many requests from this IP, please try again later.",
 });
 
-export default  limiter
+export default limiter;

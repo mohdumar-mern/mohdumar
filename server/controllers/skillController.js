@@ -9,7 +9,9 @@ export const addSkill = expressAsyncHandler(async (req, res) => {
   const { title, level, category } = req.body;
 
   if (!req.file) {
-    return res.status(400).json({ success: false, error: "No skill image uploaded" });
+    return res
+      .status(400)
+      .json({ success: false, error: "No skill image uploaded" });
   }
 
   const fileUrl = req.file.path || req.file.url;
@@ -23,7 +25,8 @@ export const addSkill = expressAsyncHandler(async (req, res) => {
   });
 
   const savedSkill = await skill.save();
-  if (!savedSkill) return res.status(500).json({ message: "Failed to save skill" });
+  if (!savedSkill)
+    return res.status(500).json({ message: "Failed to save skill" });
 
   await delCache("allSkills");
   res.status(201).json({ data: savedSkill });
@@ -38,7 +41,8 @@ export const getSkills = expressAsyncHandler(async (req, res) => {
   if (cached) return res.status(200).json({ from: "cache", data: cached });
 
   const skills = await Skill.find().lean();
-  if (!skills?.length) return res.status(404).json({ message: "Skills not found" });
+  if (!skills?.length)
+    return res.status(404).json({ message: "Skills not found" });
 
   await setCache(cacheKey, skills, 300);
   res.status(200).json({ from: "db", data: skills });
@@ -86,7 +90,8 @@ export const updateSkill = expressAsyncHandler(async (req, res) => {
     { new: true, runValidators: true }
   ).lean();
 
-  if (!updatedSkill) return res.status(400).json({ message: "Failed to update skill" });
+  if (!updatedSkill)
+    return res.status(400).json({ message: "Failed to update skill" });
 
   await delCache("allSkills");
   await delCache(`skill:${req.params.id}`);

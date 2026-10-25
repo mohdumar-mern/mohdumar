@@ -68,7 +68,7 @@ export const getContacts = expressAsyncHandler(async (req, res) => {
     lean: true,
   };
 
-  const contacts = await Contact.paginate({},options);
+  const contacts = await Contact.paginate({}, options);
 
   if (!contacts.docs.length) {
     return res.status(404).json({ message: "No contacts found" });
@@ -122,7 +122,7 @@ export const getContactById = expressAsyncHandler(async (req, res) => {
 // 🗑️ Delete Contact
 export const deleteContact = expressAsyncHandler(async (req, res) => {
   const contact = await Contact.findByIdAndDelete(req.params.id).lean();
-  
+
   if (!contact) {
     return res.status(404).json({ message: "Contact not found" });
   }
