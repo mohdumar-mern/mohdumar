@@ -9,6 +9,7 @@ import contactReducer from "../features/Contact/contactSlice";
 import authReducer from "../features/Auth/authSlice";
 import blogReducer from "../features/blog/blogSlice"
 import leadReducer from '../features/Lead/leadSlice'
+import contractsReducer from '../features/agreements/contractsSlice'
 
 const isDevelopment = import.meta.env.VITE_REACT_APP_NODE_ENV === "development";
 
@@ -23,6 +24,7 @@ export const store = configureStore({
     auth: authReducer,
     blog: blogReducer,
     leads: leadReducer,
+    contracts: contractsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     isDevelopment
