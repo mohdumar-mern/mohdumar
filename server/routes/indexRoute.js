@@ -10,6 +10,7 @@ import skillRoutes from "./skillRoutes.js";
 import profileRoutes from "./profileRoutes.js";
 import blogRoutes from "./blogRoutes.js";
 import leadRoutes from "./leadRoutes.js";
+import contractRoutes from "./contractRoutes.js";
 
 router.use("/auth", authRoutes);
 router.use("/contacts", contactRoutes);
@@ -19,5 +20,5 @@ router.use("/skills", skillRoutes);
 router.use("/profile", profileRoutes);
 router.use("/blogs", blogRoutes);
 router.use("/leads", leadRoutes);
-
+router.use("/contracts", contractRoutes);
 export default router;
