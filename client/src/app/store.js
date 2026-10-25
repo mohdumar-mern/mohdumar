@@ -7,6 +7,8 @@ import serviceReducer from "../features/service/serviceSlice";
 import profileReducer from "../features/Profile/profileSlice";
 import contactReducer from "../features/Contact/contactSlice";
 import authReducer from "../features/Auth/authSlice";
+import blogReducer from "../features/blog/blogSlice"
+import leadReducer from '../features/Lead/leadSlice'
 
 const isDevelopment = import.meta.env.VITE_REACT_APP_NODE_ENV === "development";
 
@@ -19,6 +21,8 @@ export const store = configureStore({
     profile: profileReducer,
     contact: contactReducer,
     auth: authReducer,
+    blog: blogReducer,
+    leads: leadReducer,
   },
   middleware: (getDefaultMiddleware) =>
     isDevelopment

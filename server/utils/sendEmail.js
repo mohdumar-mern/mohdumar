@@ -14,7 +14,7 @@ const sendEmail = async (subject, text, replyTo) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER, // ← khud ko email aayegi
-      replyTo: replyTo,           // ← visitor ka email reply ke liye
+      replyTo: replyTo, // ← visitor ka email reply ke liye
       subject,
       text,
     };

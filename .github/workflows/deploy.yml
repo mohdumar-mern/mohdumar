@@ -17,6 +17,8 @@ jobs:
       MONGO_URI: ${{ secrets.MONGO_URI }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}       # ← yeh add karo
+      TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }} # ← yeh add karo
 
     steps:
       - uses: actions/checkout@v4

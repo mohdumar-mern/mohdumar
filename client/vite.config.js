@@ -7,9 +7,9 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    visualizer({ open: true })
+    visualizer({ open: false })   // ✅ simple fix, koi process.env nahi
   ],
-  test: {                              // ← yeh add karo
+  test: {
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.js',
