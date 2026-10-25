@@ -3,9 +3,15 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import LayoutComponents from "./components/Layout/Layout";
 import HeroPage from "./pages/HeroSection/HeroPage";
+
 import NotFound from "./components/NotFound";
 import LeadAddUpdate from "./private/Dashboard/leads/LeadAddUpdate";
 import LeadList from "./private/Dashboard/leads/LeadList";
+import LeadDetails from "./private/Dashboard/leads/LeadDetail";
+
+// import NotFound from "./components/NotFound";
+// import LeadAddUpdate from "./private/Dashboard/leads/LeadAddUpdate";
+// import LeadList from "./private/Dashboard/leads/LeadList";
 
 // Lazy loaded pages
 const AboutPage = lazy(() => import("./pages/AboutPage/AboutPage"));
@@ -125,6 +131,8 @@ const App = () => (
               path="/dashboard/leads/edit/:id"
               element={<LeadAddUpdate />}
             />
+            <Route path="leads/:id" element={<LeadDetails />} />
+
             {/* Catch unknown protected dashboard routes */}
             <Route path="*" element={<NotFound />} />
           </Route>
